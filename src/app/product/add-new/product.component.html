@@ -1,0 +1,53 @@
+<div class="container pt-4 custom-width">
+    <form [formGroup]="productForm" (ngSubmit)="productHandler()" class="bg-info p-4">
+        <fieldset>
+            <h2 class="text-center mt-3">Create New Product</h2>
+
+            <!-- category -->
+            <div class="mt-5">
+                <label for="category">Category:</label>
+                <input formControlName="category" type="text" class="form-control" id="category"
+                    placeholder="Enter category">
+            </div>
+
+            <!-- name -->
+            <div class="mt-3">
+                <label for="name">Name:</label>
+                <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter name">
+            </div>
+
+            <!-- description -->
+            <div class="mt-3">
+                <label for="description">Description:</label>
+                <textarea formControlName="description" type="text" class="form-control" id="description"
+                    placeholder="Enter description">
+                </textarea>
+            </div>
+
+            <!-- image -->
+            <div class="mt-3">
+                <label for="imageUrl">Image url:</label>
+                <input formControlName="imageUrl" type="url" class="form-control" id="imageUrl"
+                    placeholder="Enter image url">
+            </div>
+
+            <!-- price -->
+            <div class="mt-3">
+                <label for="salePrice">Price:</label>
+                <input formControlName="salePrice" type="number" class="form-control" id="salePrice"
+                    placeholder="Enter price" step="0.01" min="0">
+            </div>
+
+            <!-- quantity -->
+            <div class="mt-3">
+                <label for="quantity">Quantity:</label>
+                <input formControlName="quantity" type="number" class="form-control" id="quantity"
+                    placeholder="Enter quantity" min="1">
+            </div>
+
+            <div class="d-grid col-6 mx-auto mt-3 mb-3">
+                <button [disabled]="productForm.invalid" class="btn btn-primary">Add Product</button>
+            </div>
+        </fieldset>
+    </form>
+</div>

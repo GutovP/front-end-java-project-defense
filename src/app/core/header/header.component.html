@@ -1,0 +1,70 @@
+<header class="fixed-top">
+    <nav class="main-navigation">
+        <ul>
+            <li class="headerItems">
+                <a *ngFor="let item of headerItems" [routerLink]="item.link"
+                    routerLinkActive="router-link-active">{{item.caption}}</a>
+            </li>
+        </ul>
+
+        <div class="space-between"></div>
+
+        <div *ngIf="isLoggedIn && isAdmin">Hello, {{getFirstName()}}. You're logged in as ADMIN</div>
+        <div *ngIf="isLoggedIn && !isAdmin">Hello, {{getFirstName()}}</div>
+
+        <ul *ngIf="!isLoggedIn">
+            <li class="unAuthItems">
+                <a *ngFor="let item of unAuthItems" [routerLink]="item.link">{{item.caption}}</a>
+            </li>
+        </ul>
+        <ul *ngIf="isLoggedIn">
+            <li class="authItems">
+                <a *ngFor="let item of authItems" [routerLink]="item.link">{{item.caption}}</a>
+            </li>
+        </ul>
+    </nav>
+
+    <nav class="product-navigation">
+        <ul>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Flowers
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Tulips</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Roses</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Lilies</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Plants
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Orchids</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="space-between"></div>
+
+        <ul *ngIf="isAdmin">
+            <li class="new-product">
+                <a routerLink="/products/add-new">Add New Product</a>
+            </li>
+        </ul>
+    </nav>
+</header>

@@ -1,0 +1,31 @@
+<div class="container pt-4 custom-width">
+    <form [formGroup]="loginForm" (ngSubmit)="loginHandler()" class="bg-info p-4">
+        <fieldset>
+            <h2 class="text-center ">Login Form</h2>
+
+            <!-- email -->
+            <div class="mt-3">
+                <label for="email">Email</label>
+                <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email" autocomplete="new-password">
+
+            </div>
+            <p *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']" class="error">
+                Email is required! </p>
+
+            <!-- password -->
+            <div class="mt-3">
+                <label for="password">Password</label>
+                <input formControlName="password" type="password" class="form-control" id="password"
+                    placeholder="Enter Password">
+            </div>
+            <p *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']"
+                class="error">
+                Password is required!</p>
+
+            <div class="d-grid col-6 mx-auto mt-3 mb-3">
+                <button [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
+            </div>
+
+        </fieldset>
+    </form>
+</div>

@@ -1,0 +1,9 @@
+.custom-width {
+  width: 25%;
+}
+
+@media screen and (max-width: 850px) {
+  .custom-width {
+    width: 90%;
+  }
+}

@@ -1,0 +1,17 @@
+/* errors  */
+p.error {
+  text-align: left;
+  border-radius: 0.3em;
+  color: red;
+  padding-top: 0;
+}
+
+.custom-width {
+  width: 25%;
+}
+
+@media screen and (max-width: 850px) {
+  .custom-width {
+    width: 90%;
+  }
+}

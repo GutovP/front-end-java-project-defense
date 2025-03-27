@@ -1,0 +1,22 @@
+<div class="background-img">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" *ngFor="let product of products">
+                <a [routerLink]="['/products', product.categoryName, product.name]"
+                    routerLinkActive="router-link-active">
+                    <div class="card text-center h-100">
+                        <img [src]="product.image" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text"><small
+                                    class="text-body-secondary"><b>€{{product.salePrice}}</b></small></p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">{{product.currentQuantity}} In stock</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

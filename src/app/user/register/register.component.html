@@ -1,0 +1,73 @@
+<div class="container pt-4 custom-width">
+    <form [formGroup]="registerForm" (ngSubmit)="registerHandler()" class="bg-info p-4">
+        <fieldset>
+            <h2 class="text-center mt-3">Registration Form</h2>
+
+            <!-- firstName -->
+            <div class="mt-5">
+                <label for="firstName">First name</label>
+                <input formControlName="firstName" type="text" class="form-control" id="firstName"
+                    placeholder="Enter first name">
+            </div>
+            <p *ngIf="firstname?.touched && firstname?.hasError('required')"
+                class="error">
+                First name is required! </p>
+            <p *ngIf="firstname?.hasError('minlength') || firstname?.hasError('maxlength')"
+                class="error">
+                First name length must be between 3 and 20 characters!</p>
+
+            <!-- lastName -->
+            <div class="mt-3">
+                <label for="lastName">Last name</label>
+                <input formControlName="lastName" type="text" class="form-control" id="lastName"
+                    placeholder="Enter last name">
+            </div>
+            <p *ngIf="lastname?.touched && lastname?.hasError('required')"
+                class="error">
+                Last name is required! </p>
+            <p *ngIf="lastname?.hasError('minlength') || lastname?.hasError('maxlength')"
+                class="error">
+                Last name length must be between 3 and 20 characters!</p>
+
+            <!-- Email -->
+            <div class="mt-3">
+                <label for="email">Email</label>
+                <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email" autocomplete="new-password" >
+            </div>
+            <p *ngIf="email?.touched && email?.hasError('required')"
+                class="error">
+                Email is required! </p>
+            <p *ngIf="email?.hasError('emailValidator')" class="error">
+                Email is not valid</p>
+
+            <!-- Password -->
+            <div class="mt-3" formGroupName="pass">
+                <label for="password">Password</label>
+                <input formControlName="password" type="password" class="form-control" id="password"
+                    placeholder="Enter Password">
+                <p *ngIf="password?.touched && password?.hasError('required')"
+                    class="error">
+                    Password is required!
+                </p>
+                <p *ngIf="password?.hasError('minlength') || password?.hasError('maxlength')"
+                    class="error">
+                    Password length must be between 6 and 20 characters!
+                </p>
+
+                <!-- rePassword -->
+                <div class="mt-3">
+                    <label for="rePassword">Repeat Password</label>
+                    <input formControlName="rePassword" type="password" class="form-control" id="rePassword"
+                        placeholder="ReEnter Password">
+                </div>
+                <p *ngIf="rePassword?.hasError('passwordGroupValidator')" class="error">
+                    Password not match!
+                </p>
+            </div>
+
+            <div class="d-grid col-6 mx-auto mt-3 mb-3">
+                <button [disabled]="registerForm.invalid" class="btn btn-primary">Create Account</button>
+            </div>
+        </fieldset>
+    </form>
+</div>

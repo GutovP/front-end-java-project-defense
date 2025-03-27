@@ -1,0 +1,21 @@
+<div class="container d-flex justify-content-center">
+    <div *ngFor="let product of products" class="card">
+        <img [src]="product.image" class="card-img-top d-block mx-auto" alt="..." style="width: 20rem;">
+        <div class="card-body">
+            <h5 class="card-title"><b>{{product.name}}</b></h5>
+            <p class="card-text">{{product.description}}</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a href="#" class="btn btn-primary">Add to basket</a>
+                </div>
+                <div *ngIf="isAdmin" class="d-flex align-items-center">
+                    <label for="quantity" class="me-2"><b>Quantity: </b></label>
+                    <input [formControl]="quantity" type="number" id="quantity" class="form-control"
+                        style="width: 5rem;">
+                    <a (click)="updateQuantity()" class="btn btn-primary ms-2">Update quantity</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
