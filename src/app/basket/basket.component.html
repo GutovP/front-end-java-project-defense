@@ -1,0 +1,14 @@
+<div *ngIf="basket">
+    <h2>Your Basket</h2>
+    <ul>
+      <li *ngFor="let item of basket.items">
+        <span>{{ item.productName }} - {{ item.productPrice| currency }}</span>
+        <span>Quantity: {{ item.quantity }}</span>
+        <span>Total Price: {{ item.itemTotalPrice| currency }}</span>
+        <!-- <button (click)="updateQuantity(productId, item.quantity + 1)">Increase</button>
+        <button (click)="updateQuantity(item.id, item.quantity - 1)" [disabled]="item.quantity <= 1">Decrease</button> -->
+      </li>
+    </ul>
+    <h3>Total Price: {{ basket.totalPrice | currency }}</h3>
+  </div>
+  

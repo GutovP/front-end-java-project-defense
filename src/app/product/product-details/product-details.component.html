@@ -6,7 +6,7 @@
             <p class="card-text">{{product.description}}</p>
             <div class="d-flex justify-content-between">
                 <div>
-                    <a href="#" class="btn btn-primary">Add to basket</a>
+                    <a (click)="addToBasket(product.id)" class="btn btn-primary">Add to basket</a>
                 </div>
                 <div *ngIf="isAdmin" class="d-flex align-items-center">
                     <label for="quantity" class="me-2"><b>Quantity: </b></label>

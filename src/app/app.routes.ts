@@ -17,6 +17,11 @@ export const routes: Routes = [
   },
 
   {
+    path: 'basket',
+    loadChildren: () => import('./basket/basket.routes').then((m) => m.BASKET_ROUTES),
+  },
+
+  {
     path: '404',
     component: PageNotFoundComponent,
   },

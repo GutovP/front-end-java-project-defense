@@ -34,7 +34,7 @@ export class ProductService {
     return this.http.post<Product>(`${baseUrl}/products/add-new-product`,{ name, description, salePrice, image, category, quantity },{ headers: new HttpHeaders(headers) });
   }
 
-  updateProductQuantity(category: string, name: string,quantity: number, headers: any): Observable<Product> {
+  updateProductQuantity(category: string, name: string, quantity: number, headers: any): Observable<Product> {
 
     return this.http.put<Product>(`${baseUrl}/products/${category}/${name}`, {quantity},{ headers: new HttpHeaders(headers) });
 

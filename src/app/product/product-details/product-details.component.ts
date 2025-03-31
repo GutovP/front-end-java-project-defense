@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from '../../core/toast/toast.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../user/user.service';
+import { BasketService } from '../../basket/basket.service';
 
 @Component({
   selector: 'app-product-details',
@@ -15,10 +16,16 @@ import { UserService } from '../../user/user.service';
 })
 export class ProductDetailsComponent implements OnInit {
   products: any[] = [];
+  basket: any[] = [];
   private productService = inject(ProductService);
   private userService = inject(UserService);
+  private basketService = inject(BasketService);
   private activatedRoute = inject(ActivatedRoute);
   private toastService = inject(ToastService);
+   headers = {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + this.userService.getToken(),
+  };
 
   quantity = new FormControl(1);
 
@@ -52,14 +59,9 @@ export class ProductDetailsComponent implements OnInit {
       const category = params['category'];
       const name = params['name'];
 
-      const quantity = this.quantity.value;
+      const quantity = this.quantity.value;      
 
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.userService.getToken(),
-      };
-
-      this.productService.updateProductQuantity(category, name, quantity!, headers).subscribe({
+      this.productService.updateProductQuantity(category, name, quantity!, this.headers).subscribe({
         next: () => {
           this.toastService.activate('Quantity updated successfully');
         },
@@ -69,4 +71,20 @@ export class ProductDetailsComponent implements OnInit {
       });
     });
   }
+
+  addToBasket(productId: string) {
+
+
+    this.basketService.addToBasket(productId, 1, this.headers).subscribe({
+      next: (response) => {
+        console.log('Product added to basket:', response);
+        this.basket.push(response);
+      },
+      error: (error) => {
+        this.toastService.activate('You have to log in to use the basket.');
+      },
+    });
+  }
+
+
 }
