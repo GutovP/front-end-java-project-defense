@@ -30,4 +30,9 @@ export class BasketService {
     return this.http.put(`${baseUrl}/basket/${productId}/quantity?newQuantity=${newQuantity}`, {newQuantity}, { headers: new HttpHeaders(headers) });
 
   }
+
+  removeFromBasket(basketItemId: string, headers: any): Observable<any> {
+
+    return this.http.delete(`${baseUrl}/basket/${basketItemId}/remove`, {headers: new HttpHeaders(headers)});
+  }
 }

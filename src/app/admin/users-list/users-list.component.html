@@ -1,0 +1,23 @@
+<h1 class="text-center">User List:</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Current Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                <select [(ngModel)]="user['newRole']">
+                    <option value="USER">User</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+                <button class="btn btn-primary btn-sm" (click)="updateRole(user.id, user.newRole!)">Update Role</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

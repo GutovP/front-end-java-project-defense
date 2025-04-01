@@ -22,7 +22,8 @@ export class ProductDetailsComponent implements OnInit {
   private basketService = inject(BasketService);
   private activatedRoute = inject(ActivatedRoute);
   private toastService = inject(ToastService);
-   headers = {
+  private router = inject(Router);
+  headers = {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + this.userService.getToken(),
   };
@@ -55,36 +56,40 @@ export class ProductDetailsComponent implements OnInit {
 
   updateQuantity(): void {
     this.activatedRoute.params.subscribe((params) => {
-
       const category = params['category'];
       const name = params['name'];
 
-      const quantity = this.quantity.value;      
+      const quantity = this.quantity.value;
 
-      this.productService.updateProductQuantity(category, name, quantity!, this.headers).subscribe({
-        next: () => {
-          this.toastService.activate('Quantity updated successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.toastService.activate(error.error.message);
-        },
-      });
+      this.productService
+        .updateProductQuantity(category, name, quantity!, this.headers)
+        .subscribe({
+          next: () => {
+            this.toastService.activate('Quantity updated successfully');
+          },
+          error: (error: HttpErrorResponse) => {
+            this.toastService.activate(error.error.message);
+          },
+        });
     });
   }
 
   addToBasket(productId: string) {
-
-
     this.basketService.addToBasket(productId, 1, this.headers).subscribe({
       next: (response) => {
-        console.log('Product added to basket:', response);
+        this.toastService.activate('Product added to basket.');
         this.basket.push(response);
       },
-      error: (error) => {
-        this.toastService.activate('You have to log in to use the basket.');
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.toastService.activate(
+            'You have to log in to add product to the basket.'
+          );
+          this.router.navigate(['auth/login']);
+        } else {
+          this.toastService.activate(error.error.message);
+        }
       },
     });
   }
-
-
 }

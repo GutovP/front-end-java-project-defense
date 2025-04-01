@@ -22,6 +22,11 @@ export const routes: Routes = [
   },
 
   {
+    path: 'users',
+    loadChildren: () => import('./admin/users-list/users.routes').then((m) => m.USERS_ROUTES),
+  },
+
+  {
     path: '404',
     component: PageNotFoundComponent,
   },

@@ -117,3 +117,11 @@ ul li {
   color: #fff;
   text-decoration: none;
 }
+
+.basket-items a {
+  padding: 0.5em 1.5em;
+  border-radius: 0.3em;
+  background-color: #369;
+  color: #fff;
+  text-decoration: none;
+}

@@ -4,6 +4,8 @@ export interface User {
   lastName: string;
   email: string;
   password?: string;
+  role: string;
+  newRole?: string;
   
   [key: string]: string | number | undefined;
 }
