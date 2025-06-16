@@ -43,13 +43,9 @@ export class BasketComponent {
   }
 
   updateQuantity(productId: string, newQuantity: number): void {
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + this.userService.getToken(),
-    };
 
     this.basketService
-      .updateItemQuantity(productId, newQuantity, headers)
+      .updateItemQuantity(productId, newQuantity)
       .subscribe({
         next: () => {
           this.viewBasket();
@@ -69,12 +65,8 @@ export class BasketComponent {
     }
   }
   removeFromBasket(basketItemId: string) {
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + this.userService.getToken(),
-    };
 
-    this.basketService.removeFromBasket(basketItemId, headers).subscribe({
+    this.basketService.removeFromBasket(basketItemId).subscribe({
       next: (response) => {
         this.basket = response;
       },

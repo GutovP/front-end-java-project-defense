@@ -1,21 +1,10 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, OnDestroy } from '@angular/core';
-import { environment } from '../../environments/environment.development';
-import {
-  BehaviorSubject,
-  catchError,
-  Observable,
-  Subscription,
-  tap,
-  throwError,
-} from 'rxjs';
-
-import { User } from '../core/models/user';
+import { BehaviorSubject, catchError, Observable, Subscription, tap, throwError} from 'rxjs';
 import { Router } from '@angular/router';
+
+import { environment } from '../../environments/environment.development';
+import { User } from '../core/models/user';
 
 const baseUrl = environment.apiURL;
 
@@ -38,11 +27,11 @@ export class UserService implements OnDestroy {
   constructor() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      this.user$$.next(JSON.parse(storedUser));
+      this.storeUser(JSON.parse(storedUser));
     }
 
     const storedToken = localStorage.getItem('token');
-    if (storedToken) {
+    if (storedToken && !storedUser) {
       this.getProfile().subscribe();
     }
 
@@ -53,46 +42,36 @@ export class UserService implements OnDestroy {
   getToken() {
     return localStorage.getItem('token');
   }
+
   isTokenExpired(token: string): boolean {
     const expiry = JSON.parse(atob(token.split('.')[1])).exp;
     return Math.floor(new Date().getTime() / 1000) >= expiry;
   }
+
   getUserRole() {
     return this.user?.['role'] || '';
   }
-  validateToken(options: {headers: HttpHeaders; responseType: 'text';}): Observable<any> {
-    return this.http.get(`${baseUrl}/user/validate-token`, {headers: options.headers,responseType: 'text',});
+  storeUser(user: User): void {
+      localStorage.setItem('user', JSON.stringify(user));
+      this.user$$.next(user);
   }
 
-  register(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    rePassword: string
-  ): Observable<User> {
-    return this.http
-      .post<User>(
-        `${baseUrl}/auth/register`,
-        { firstName, lastName, email, password, rePassword },
-        { withCredentials: true }
-      )
+  register(firstName: string, lastName: string, email: string, password: string, rePassword: string): Observable<User> {
+    return this.http.post<User>(`${baseUrl}/auth/register`, { firstName, lastName, email, password, rePassword }, { withCredentials: true })
       .pipe(
-        catchError(this.errorHandler),
         tap((user) => {
-          this.user$$.next(user);
-        })
+          this.storeUser(user);
+        }),
+        catchError(this.errorHandler)
       );
   }
 
   login(email: string, password: string): Observable<{ token: string; user: User }> {
-
     return this.http.post<{ token: string; user: User }>(`${baseUrl}/auth/login`,{ email, password },{ withCredentials: true })
       .pipe(
         tap((response) => {
           localStorage.setItem('token', response.token);
-          this.user$$.next(response.user);
-          localStorage.setItem('user', JSON.stringify(response.user));
+          this.storeUser(response.user);
         }),
         catchError(this.errorHandler)
       );
@@ -104,71 +83,33 @@ export class UserService implements OnDestroy {
     this.router.navigate(['/auth/login']);
   }
   getProfile(): Observable<User> {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      return throwError(() => new Error('No token found'));
-    }
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http
-      .get<User>(`${baseUrl}/user/profile`, { headers, withCredentials: true })
+    return this.http.get<User>(`${baseUrl}/user/profile`, { withCredentials: true })
       .pipe(
         tap((user) => {
-          this.user$$.next(user);
-          localStorage.setItem('user', JSON.stringify(user));
+          this.storeUser(user);
         }),
         catchError(this.errorHandler)
       );
   }
 
-  updateProfile(
-    firstName: string,
-    lastName: string,
-    email: string
-  ): Observable<User> {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      return throwError(() => new Error('No token found'));
-    }
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  updateProfile(firstName: string, lastName: string, email: string): Observable<User> {
     const updatePayload: Partial<User> = { firstName, lastName, email };
-
-    return this.http
-      .put<User>(`${baseUrl}/user/profile`, updatePayload, {
-        headers,
-        withCredentials: true,
-      })
+    return this.http.put<User>(`${baseUrl}/user/profile`, updatePayload, {withCredentials: true,})
       .pipe(
         tap((user) => {
-          this.user$$.next(user);
-          localStorage.setItem('user', JSON.stringify(user));
+          this.storeUser(user);
         }),
         catchError(this.errorHandler)
       );
   }
-  changePassword(
-    currentPassword: string,
-    newPassword: string
-  ): Observable<any> {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      return throwError(() => new Error('No token found'));
-    }
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http
-      .put(
-        `${baseUrl}/user/change-password`,
-        { currentPassword, newPassword },
-        { headers, withCredentials: true }
-      )
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+    
+    return this.http.put(`${baseUrl}/user/change-password`, { currentPassword, newPassword }, { withCredentials: true })
       .pipe(catchError(this.errorHandler));
   }
 
-  errorHandler(error: HttpErrorResponse) {
-    return throwError(() => error);
+  errorHandler(error: HttpErrorResponse): Observable<never> {
+    return throwError(() => new Error(error.message));
   }
 
   ngOnDestroy(): void {

@@ -25,37 +25,12 @@
     </nav>
 
     <nav class="product-navigation">
-        <ul>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+        <ul *ngFor="let category of categories">
+            <li class="nav-item ">
+                <a class="nav-link " [routerLink]="['/products', category.caption]" role="button" 
                     aria-expanded="false">
-                    Flowers
+                    {{category.caption}}
                 </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Tulips</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Roses</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Lilies</a></li>
-                </ul>
-            </li>
-        </ul>
-        <ul>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Plants
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Orchids</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                </ul>
             </li>
         </ul>
 

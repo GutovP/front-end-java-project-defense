@@ -12,32 +12,31 @@ const baseUrl = environment.apiURL;
 })
 export class ProductService {
   private http = inject(HttpClient);
-  private router = inject(Router);
 
   constructor() {}
 
   getProducts(): Observable<Product[]> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
 
-    return this.http.get<Product[]>(`${baseUrl}/products/all`, { headers });
+    return this.http.get<Product[]>(`${baseUrl}/products`);
   }
 
   getProductDetails(category: string, name: string): Observable<Product[]> {
+
     return this.http.get<Product[]>(`${baseUrl}/products/${category}/${name}`);
   }
+  getProductsByCategory(category: string): Observable<Product[]> {
 
-  addProduct(name: string, description: string, salePrice: number, image: string, category: string, quantity: number, headers: any): Observable<Product> {
-
-    return this.http.post<Product>(`${baseUrl}/products/add-new-product`,{ name, description, salePrice, image, category, quantity },{ headers: new HttpHeaders(headers) });
+    return this.http.get<Product[]>(`${baseUrl}/products/${category}`);
   }
 
-  updateProductQuantity(category: string, name: string, quantity: number, headers: any): Observable<Product> {
+  addProduct(name: string, description: string, salePrice: number, image: string, category: string, quantity: number): Observable<Product> {
 
-    return this.http.put<Product>(`${baseUrl}/products/${category}/${name}`, {quantity},{ headers: new HttpHeaders(headers) });
+    return this.http.post<Product>(`${baseUrl}/products/add-new-product`,{ name, description, salePrice, image, category, quantity });
+  }
 
+  updateProductQuantity(category: string, name: string, quantity: number): Observable<Product> {
+
+    return this.http.put<Product>(`${baseUrl}/products/${category}/${name}`, {quantity});
   }
 
 

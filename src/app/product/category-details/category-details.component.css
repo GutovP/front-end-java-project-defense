@@ -1,0 +1,17 @@
+body {
+  box-sizing: border-box;
+}
+
+.container a {
+  text-decoration: none;
+}
+
+.card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #635da8;
+}
+
+.card:hover .card-title {
+  text-decoration: underline;
+}

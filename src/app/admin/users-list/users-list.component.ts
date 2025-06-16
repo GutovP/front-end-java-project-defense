@@ -4,6 +4,7 @@ import { AdminService } from '../admin.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../core/toast/toast.service';
+import { UserService } from '../../user/user.service';
 
 @Component({
   selector: 'app-users-list',
@@ -15,6 +16,7 @@ export class UsersListComponent implements OnInit {
   private adminService = inject(AdminService);
   private cdRef = inject(ChangeDetectorRef);
   private toastService = inject(ToastService);
+  private userService = inject(UserService);
 
   users: User[] | undefined;
 
@@ -23,6 +25,7 @@ export class UsersListComponent implements OnInit {
   }
 
   loadAllUsers() {
+
     return this.adminService.getAllUsers().subscribe({
       next: (data) => {
         this.users = data;
@@ -37,12 +40,8 @@ export class UsersListComponent implements OnInit {
   }
 
   updateRole(userId: string, newRole: string): void {
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
-    };
-
-    this.adminService.updateUserRole(userId, newRole, headers).subscribe({
+   
+    this.adminService.updateUserRole(userId, newRole).subscribe({
       next: () => {
         console.log(`Role updated for user ${userId} to ${newRole}`);
 

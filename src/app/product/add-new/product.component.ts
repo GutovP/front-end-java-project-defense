@@ -37,11 +37,6 @@ export class ProductComponent {
     const { name, description, salePrice, imageUrl, category, quantity } =
       this.productForm.value;
 
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + this.userService.getToken(),
-    };
-
     this.productService
       .addProduct(
         name!,
@@ -50,7 +45,6 @@ export class ProductComponent {
         imageUrl!,
         category!,
         quantity!,
-        headers
       )
       .subscribe({
         next: (product) => {

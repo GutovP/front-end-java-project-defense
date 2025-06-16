@@ -1,52 +1,26 @@
-import {
-  HTTP_INTERCEPTORS,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
-import { inject, Injectable, Provider } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
-import { UserService } from '../../user/user.service';
-import { Router } from '@angular/router';
+import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
+import { UserService } from "../../user/user.service";
+import { inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { catchError, throwError } from "rxjs";
 
-@Injectable({
-  providedIn: 'root',
-})
-export class JwtInterceptor implements HttpInterceptor {
-  private userService = inject(UserService);
-  private router = inject(Router);
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const token = this.userService.getToken();
+export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+  const userService = inject(UserService);
+  const router = inject(Router);
 
-    if (token) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    }
+  const token = userService.getToken();
 
-    return next.handle(req).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          this.userService.logout();
-          if (this.router.url !== '/auth/login') {
-            this.router.navigate(['/auth/login']);
-          }
+  const newReq = token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
+
+  return next(newReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        userService.logout();
+        if (router.url !== '/auth/login') {
+          router.navigate(['/auth/login']);
         }
-        return throwError(() => error);
-      })
-    );
-  }
-}
-
-export const jwtInterceptorProvider: Provider = {
-  provide: HTTP_INTERCEPTORS,
-  useClass: JwtInterceptor,
-  multi: true,
+      }
+      return throwError(() => error);
+    })
+  );
 };

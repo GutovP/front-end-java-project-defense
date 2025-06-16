@@ -9,8 +9,11 @@
                 <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email" autocomplete="new-password">
 
             </div>
-            <p *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']" class="error">
+             <p *ngIf="email?.touched && email?.hasError('required')"
+                class="error">
                 Email is required! </p>
+            <p *ngIf="email?.hasError('emailValidator')" class="error">
+                Email is not valid</p>
 
             <!-- password -->
             <div class="mt-3">
@@ -18,14 +21,15 @@
                 <input formControlName="password" type="password" class="form-control" id="password"
                     placeholder="Enter Password">
             </div>
-            <p *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']"
-                class="error">
-                Password is required!</p>
+             <p *ngIf="password?.touched && password?.hasError('required')"
+                    class="error">
+                    Password is required!
+                </p>
 
             <div class="d-grid col-6 mx-auto mt-3 mb-3">
                 <button [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
             </div>
-
+            <p class="text-center"><b>Don't have an account?</b><a [routerLink]="['/auth/register']" class="text-success text-decoration-none"><b>  Register now!</b></a></p>
         </fieldset>
     </form>
 </div>

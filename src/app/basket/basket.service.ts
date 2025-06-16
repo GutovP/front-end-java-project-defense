@@ -12,27 +12,20 @@ const baseUrl = environment.apiURL;
 export class BasketService {
   private http = inject(HttpClient);
 
-  addToBasket(productId: string, quantity: number, headers: any) {
-    return this.http.post(`${baseUrl}/basket/add`,{ productId, quantity },{ headers: new HttpHeaders(headers) });
+  addToBasket(productId: string, quantity: number) {
+    return this.http.post(`${baseUrl}/basket/add`,{ productId, quantity });
   }
 
   viewBasket(): Observable<Basket> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get<Basket>(`${baseUrl}/basket/view`, { headers });
+    return this.http.get<Basket>(`${baseUrl}/basket/view`);
   }
 
-  updateItemQuantity(productId: string, newQuantity: number, headers: any): Observable<any> {
-
-    return this.http.put(`${baseUrl}/basket/${productId}/quantity?newQuantity=${newQuantity}`, {newQuantity}, { headers: new HttpHeaders(headers) });
-
+  updateItemQuantity(productId: string, newQuantity: number): Observable<any> {
+    return this.http.put(`${baseUrl}/basket/${productId}/quantity?newQuantity=${newQuantity}`, {newQuantity});
   }
 
-  removeFromBasket(basketItemId: string, headers: any): Observable<any> {
+  removeFromBasket(basketItemId: string): Observable<any> {
 
-    return this.http.delete(`${baseUrl}/basket/${basketItemId}/remove`, {headers: new HttpHeaders(headers)});
+    return this.http.delete(`${baseUrl}/basket/${basketItemId}/remove`);
   }
 }

@@ -106,19 +106,15 @@ export class ProfileComponent implements OnInit {
   updateField(field: string): void {
     const token = this.userService.getToken();
 
-    if (
-      !this.userService.isLoggedIn &&
-      this.userService.isTokenExpired(token!)
-    ) {
+    if (!this.userService.isLoggedIn && this.userService.isTokenExpired(token!)) {
       this.handleUnauthorized();
       return;
     }
 
     if (field === 'password') {
-      this.profileForm
-        .get('currentPassword')
-        ?.setValidators([Validators.required]);
+      this.profileForm.get('currentPassword')?.setValidators([Validators.required]);
       this.profileForm.get('currentPassword')?.updateValueAndValidity();
+      
     } else {
       this.profileForm.get('currentPassword')?.clearValidators();
       this.profileForm.get('currentPassword')?.updateValueAndValidity();
@@ -157,11 +153,7 @@ export class ProfileComponent implements OnInit {
       };
 
       this.userService
-        .updateProfile(
-          updatedFields.firstName!,
-          updatedFields.lastName!,
-          updatedFields.email!
-        )
+        .updateProfile(updatedFields.firstName!, updatedFields.lastName!, updatedFields.email!)
         .subscribe({
           next: (user) => {
             this.user = user;

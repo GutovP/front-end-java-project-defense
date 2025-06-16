@@ -7,6 +7,7 @@ import { ToastService } from '../../core/toast/toast.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../user/user.service';
 import { BasketService } from '../../basket/basket.service';
+import { Product } from '../../core/models/product';
 
 @Component({
   selector: 'app-product-details',
@@ -15,18 +16,16 @@ import { BasketService } from '../../basket/basket.service';
   styleUrl: './product-details.component.css',
 })
 export class ProductDetailsComponent implements OnInit {
-  products: any[] = [];
-  basket: any[] = [];
+ 
   private productService = inject(ProductService);
   private userService = inject(UserService);
   private basketService = inject(BasketService);
   private activatedRoute = inject(ActivatedRoute);
   private toastService = inject(ToastService);
   private router = inject(Router);
-  headers = {
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + this.userService.getToken(),
-  };
+ 
+  products: Product[] | undefined;
+  basket: any[] = [];
 
   quantity = new FormControl(1);
 
@@ -62,7 +61,7 @@ export class ProductDetailsComponent implements OnInit {
       const quantity = this.quantity.value;
 
       this.productService
-        .updateProductQuantity(category, name, quantity!, this.headers)
+        .updateProductQuantity(category, name, quantity!)
         .subscribe({
           next: () => {
             this.toastService.activate('Quantity updated successfully');
@@ -75,7 +74,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToBasket(productId: string) {
-    this.basketService.addToBasket(productId, 1, this.headers).subscribe({
+    this.basketService.addToBasket(productId, 1).subscribe({
       next: (response) => {
         this.toastService.activate('Product added to basket.');
         this.basket.push(response);
