@@ -8,11 +8,15 @@
                 <div>
                     <a (click)="addToBasket(product.id)" class="btn btn-primary">Add to basket</a>
                 </div>
-                <div *ngIf="isAdmin" class="d-flex align-items-center">
+                <div *ngIf="isAdmin" class="d-flex align-items-center justify-content-between">
+                    
+                    <a (click)="deleteProduct(product.id)" class="btn btn-primary me-2">Delete product</a>
+                    
                     <label for="quantity" class="me-2"><b>Quantity: </b></label>
                     <input [formControl]="quantity" type="number" id="quantity" class="form-control"
                         style="width: 5rem;">
                     <a (click)="updateQuantity()" class="btn btn-primary ms-2">Update quantity</a>
+                   
                 </div>
 
             </div>

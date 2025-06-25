@@ -91,4 +91,25 @@ export class ProductDetailsComponent implements OnInit {
       },
     });
   }
+  deleteProduct(productId: string) {
+    
+    this.productService.deleteProduct(productId).subscribe({
+      next: () => {
+        this.toastService.activate('Product deleted from the DB.');
+      },
+      error: (error: HttpErrorResponse) => {
+
+         if (error.status === 401) {
+          this.toastService.activate(
+            'You have to log in as ADMIN to delete a product!'
+          );
+          this.router.navigate(['auth/login']);
+        } else {
+          this.toastService.activate(error.error.message);
+        }
+      }
+    })
+  }
+
+
 }

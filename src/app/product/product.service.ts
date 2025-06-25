@@ -38,6 +38,13 @@ export class ProductService {
 
     return this.http.put<Product>(`${baseUrl}/products/${category}/${name}`, {quantity});
   }
+  getCategories(): Observable<Product[]> {
 
+    return this.http.get<Product[]>(`${baseUrl}/products/categories`);
+  }
+  deleteProduct(productId: string): Observable<any> {
+
+    return this.http.delete(`${baseUrl}/products/${productId}/remove`);
+  }
 
 }

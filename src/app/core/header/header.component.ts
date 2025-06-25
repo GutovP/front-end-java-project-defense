@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderItems } from './header-items';
 import { UserService } from '../../user/user.service';
 import { Product } from '../models/product';
+import { ProductService } from '../../product/product.service';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ import { Product } from '../models/product';
 })
 export class HeaderComponent implements OnInit {
   private userService = inject(UserService);
+  private productService = inject(ProductService);
 
   get isLoggedIn(): boolean {
     return this.userService.isLoggedIn;
@@ -27,7 +29,7 @@ export class HeaderComponent implements OnInit {
   headerItems: HeaderItems[] = [];
   authItems: HeaderItems[] = [];
   unAuthItems: HeaderItems[] = [];
-  categories: HeaderItems[] = [];
+  categories: Product[] | undefined;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -49,12 +51,19 @@ export class HeaderComponent implements OnInit {
       { caption: 'Register', link: ['/auth/register'] },
     ];
 
-    this.categories = [
-      {caption: 'Flowers', link: []},
-      {caption: 'Plants', link: []},
-    ];
+    // this.categories = [
+    //   {caption: 'Flowers', link: []},
+    //   {caption: 'Plants', link: []},
+    // ];
 
-
+    this.getCategories();
   }    
+
+  getCategories() {
+    
+    return this.productService.getCategories().subscribe((categories) => {
+      this.categories = categories;
+    })
+  }
 
 }

@@ -27,9 +27,9 @@
     <nav class="product-navigation">
         <ul *ngFor="let category of categories">
             <li class="nav-item ">
-                <a class="nav-link " [routerLink]="['/products', category.caption]" role="button" 
+                <a class="nav-link " [routerLink]="['/products', category]" role="button" 
                     aria-expanded="false">
-                    {{category.caption}}
+                    {{category}}
                 </a>
             </li>
         </ul>
