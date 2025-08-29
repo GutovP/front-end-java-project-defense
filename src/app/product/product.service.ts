@@ -31,7 +31,7 @@ export class ProductService {
 
   addProduct(name: string, description: string, salePrice: number, image: string, category: string, quantity: number): Observable<Product> {
 
-    return this.http.post<Product>(`${baseUrl}/products/add-new-product`,{ name, description, salePrice, image, category, quantity });
+    return this.http.post<Product>(`${baseUrl}/products`,{ name, description, salePrice, image, category, quantity });
   }
 
   updateProductQuantity(category: string, name: string, quantity: number): Observable<Product> {
@@ -44,7 +44,7 @@ export class ProductService {
   }
   deleteProduct(productId: string): Observable<any> {
 
-    return this.http.delete(`${baseUrl}/products/${productId}/remove`);
+    return this.http.delete(`${baseUrl}/products/${productId}`);
   }
 
 }

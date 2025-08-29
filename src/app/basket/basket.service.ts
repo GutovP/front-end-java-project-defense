@@ -13,11 +13,11 @@ export class BasketService {
   private http = inject(HttpClient);
 
   addToBasket(productId: string, quantity: number) {
-    return this.http.post(`${baseUrl}/basket/add`,{ productId, quantity });
+    return this.http.post(`${baseUrl}/basket`,{ productId, quantity });
   }
 
   viewBasket(): Observable<Basket> {
-    return this.http.get<Basket>(`${baseUrl}/basket/view`);
+    return this.http.get<Basket>(`${baseUrl}/basket`);
   }
 
   updateItemQuantity(productId: string, newQuantity: number): Observable<any> {
@@ -26,6 +26,6 @@ export class BasketService {
 
   removeFromBasket(basketItemId: string): Observable<any> {
 
-    return this.http.delete(`${baseUrl}/basket/${basketItemId}/remove`);
+    return this.http.delete(`${baseUrl}/basket/${basketItemId}`);
   }
 }
