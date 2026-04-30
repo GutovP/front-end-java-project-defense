@@ -6,7 +6,7 @@ body {
   display: block;
   width: 100vw; /* Full viewport width */
   min-height: 100vh; /* Full viewport height */
-  background-image: url(../../../assets/img/flowers-banner-1024x307.jpg);
+  background-image: url(/assets/img/flowers-banner-1024x307.jpg);
   background-size: cover; /* Ensures the image covers the entire area */
   background-repeat: no-repeat; /* Prevents tiling of the image */
   background-position: center; /* Centers the image */

@@ -8,7 +8,7 @@
 }
 
 .parallax {
-  background-image: url("../../assets/img/burgas_mosta.jpg");
+  background-image: url("/assets/img/burgas_mosta.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
