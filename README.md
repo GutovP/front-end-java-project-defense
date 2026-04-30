@@ -1,59 +1,121 @@
-# JavaFrontEnd
+# Online Shop Frontend – Angular 19
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
+A responsive and modular Angular 19+ frontend for the Online Shop project.
+It integrates seamlessly with the Spring Boot backend, providing a clean UI, JWT‑secured user flows
+and an admin interface for managing products and users.
 
-## Development server
+## Features
 
-To start a local development server, run:
+### Authentication & Authorization
 
-```bash
-ng serve
+- Login, register, logout.
+- JWT authentication with automatic token injection
+- Role‑based UI (User / Admin)
+- Route guards (AuthGuard, AdminGuard)
+- Persistent login using localStorage
+
+### Shop Functionality
+
+- Product listing with responsive grid
+- Product detail view
+- Add to basket
+- Basket page with quantity updates & total calculation
+- User profile editing
+- Admin dashboard for managing:
+  •	Products
+  •	Users
+  •	Inventory
+
+### Architecture & State
+
+- Feature‑based module structure
+- Shared components & services
+- BehaviorSubject‑based state management (lightweight alternative to NgRx)
+- Interceptors for JWT handling
+- Reusable UI components (navbar, product card, alerts, loaders)
+- Custom validators & resolvers
+
+### UI & Styling
+
+- Bootstrap 5
+- Custom CSS for layout and components
+- Mobile‑friendly responsive design
+- Toast notifications for success/error/info message
+
+### Tech Stack
+
+- Framework: Angular 19+
+- Styling: Bootstrap 5, Custom CSS
+- State: BehaviorSubject
+- API: REST communication with Spring Boot backend
+- Auth: JWT + HttpInterceptor
+- Build: Angular CLI
+
+### Backend Integration
+
+The frontend communicates with the Spring Boot backend via REST API:
+- Auth endpoints
+- Product endpoints
+- Basket endpoints
+- User profile endpoints
+- Admin endpoints
+All requests automatically include the JWT token via an HttpInterceptor.
+
+
+## Project Structure
+```
+src/
+├── app
+│   ├── admin
+│   │   └── users-list                 # Admin users management
+│   │
+│   ├── core
+│   │   ├── header                 # Header component
+│   │   ├── models                 # Interfaces (User, Product, Basket, Toast)
+│   │   └── toast                  # Toast service + component
+│   │
+│   ├── home                       # Home page module
+│   │
+│   ├── product
+│   │   ├── add-new                # Add new product page
+│   │   ├── category-details       # Category details page
+│   │   ├── product-details        # Product details page
+│   │   ├── product.routes.ts
+│   │   ├── product.service.ts
+│   │
+│   ├── shared
+│   │   ├── guards                 # AuthGuard, AdminGuard
+│   │   ├── interceptors           # JWT interceptor
+│   │   ├── resolver               # Category resolver
+│   │   └── validators             # Email + password validators
+│   │
+│   ├── user
+│   │   ├── login                  # Login page
+│   │   ├── logout                 # Logout logic
+│   │   ├── profile                # Profile editing
+│   │   ├── register               # Registration page
+│   │   ├── user-routing.module.ts
+│   │   ├── user.module.ts
+│   │   ├── user.service.ts
+│   │
+│   ├── app.component.*            # Root component
+│   ├── app.config.ts
+│   └── app.routes.ts
+│
+├── assets                         # Images, icons, static files
+├── environments                   # Environment configs
+│   ├── environment.ts
+│   └── environment.development.ts
+│
+├── index.html
+├── main.ts
+└── styles.css
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Future Improvements
 
-## Code scaffolding
+- Checkout & payment integration
+- Product search & filtering
+- Admin analytics dashboard
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
