@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterEvent, RouterModule } from '@angular/router';
 
 import { HeaderItems } from './header-items';
 import { UserService } from '../../user/user.service';
 import { Product } from '../models/product';
 import { ProductService } from '../../product/product.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,7 @@ import { ProductService } from '../../product/product.service';
 export class HeaderComponent implements OnInit {
   private userService = inject(UserService);
   private productService = inject(ProductService);
-
+  private router = inject(Router);
   get isLoggedIn(): boolean {
     return this.userService.isLoggedIn;
   }
@@ -26,6 +27,8 @@ export class HeaderComponent implements OnInit {
   getFirstName(): string {
     return this.userService.user?.firstName!;
   }
+  public showProductNav = false;
+  public navbarCollapsed = true;
   headerItems: HeaderItems[] = [];
   authItems: HeaderItems[] = [];
   unAuthItems: HeaderItems[] = [];
@@ -36,8 +39,8 @@ export class HeaderComponent implements OnInit {
 
     this.headerItems = [
       { caption: 'Home', link: [''] },
-      { caption: 'About', link: [] },
-      { caption: 'Contact', link: [] },
+      { caption: 'Flower shop', link: ['/products/all'] },
+      { caption: 'Contact', link: ['/contact'] },
       { caption: 'Users', link: ['/users'] },
     ];
 
@@ -51,19 +54,26 @@ export class HeaderComponent implements OnInit {
       { caption: 'Register', link: ['/auth/register'] },
     ];
 
-    // this.categories = [
-    //   {caption: 'Flowers', link: []},
-    //   {caption: 'Plants', link: []},
-    // ];
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.checkUrl(event.urlAfterRedirects);
+    });
 
     this.getCategories();
-  }    
-
-  getCategories() {
     
-    return this.productService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    })
+    this.checkUrl(this.router.url);
   }
 
+  getCategories() {
+    return this.productService.getCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
+  }
+
+  checkUrl(url: string) {
+    const allowedPaths = ['/products', '/basket'];
+    this.showProductNav = allowedPaths.some(path => url.includes(path));
+  }
+  
 }

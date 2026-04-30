@@ -12,7 +12,7 @@
              <p *ngIf="email?.touched && email?.hasError('required')"
                 class="error">
                 Email is required! </p>
-            <p *ngIf="email?.hasError('emailValidator')" class="error">
+            <p *ngIf="email?.touched && email?.hasError('emailValidator')" class="error">
                 Email is not valid</p>
 
             <!-- password -->

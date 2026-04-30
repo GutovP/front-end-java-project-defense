@@ -3,9 +3,6 @@
   margin: 0;
 }
 
-body {
-  padding-top: 10em;
-}
 html {
   box-sizing: border-box;
 }
@@ -13,4 +10,8 @@ html {
 *::before,
 *::after {
   box-sizing: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
 }

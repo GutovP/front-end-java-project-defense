@@ -1,0 +1,42 @@
+.product-details-card {
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.img-container {
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.img-container img {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.quantity-input {
+  width: 4rem;
+}
+
+@media (max-width: 576px) {
+  .product-details-card {
+    margin: 0 1rem;
+  }
+
+  .admin-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .admin-controls > button,
+  .admin-controls > div {
+    width: 100%;
+    justify-content: center;
+  }
+}

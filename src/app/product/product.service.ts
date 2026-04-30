@@ -20,9 +20,9 @@ export class ProductService {
     return this.http.get<Product[]>(`${baseUrl}/products`);
   }
 
-  getProductDetails(category: string, name: string): Observable<Product[]> {
+  getProductDetails(category: string, name: string): Observable<Product> {
 
-    return this.http.get<Product[]>(`${baseUrl}/products/${category}/${name}`);
+    return this.http.get<Product>(`${baseUrl}/products/${category}/${name}`);
   }
   getProductsByCategory(category: string): Observable<Product[]> {
 

@@ -1,24 +1,31 @@
-<div class="container d-flex justify-content-center">
-    <div *ngFor="let product of products" class="card">
-        <img [src]="product.image" class="card-img-top d-block mx-auto" alt="..." style="width: 20rem;">
-        <div class="card-body">
-            <h5 class="card-title"><b>{{product.name}}</b></h5>
-            <p class="card-text">{{product.description}}</p>
-            <div class="d-flex justify-content-between">
-                <div>
-                    <a (click)="addToBasket(product.id)" class="btn btn-primary">Add to basket</a>
-                </div>
-                <div *ngIf="isAdmin" class="d-flex align-items-center justify-content-between">
-                    
-                    <a (click)="deleteProduct(product.id)" class="btn btn-primary me-2">Delete product</a>
-                    
-                    <label for="quantity" class="me-2"><b>Quantity: </b></label>
-                    <input [formControl]="quantity" type="number" id="quantity" class="form-control"
-                        style="width: 5rem;">
-                    <a (click)="updateQuantity()" class="btn btn-primary ms-2">Update quantity</a>
-                   
-                </div>
+<div class="container d-flex justify-content-center py-4">
+    <div *ngIf="product" class="card product-details-card">
+        <div class="img-container">
+            <img [src]="product.image" class="card-img-top d-block mx-auto" alt="{{product.name}}">
+        </div>
 
+        <div class="card-body">
+            <h5 class="card-title text-center"><b>{{product.name}}</b></h5>
+            <p class="card-text text-center">{{product.description}}</p>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+
+                <button *ngIf="!isAdmin" (click)="addToBasket(product.id)" 
+                        class="btn btn-primary">Add to basket
+                </button>
+
+                <div *ngIf="isAdmin" class="admin-controls d-flex flex-wrap align-items-center justify-content-center"
+                    gap-2 border-top pt-3 w-100>
+
+                    <button (click)="deleteProduct(product.id)" class="btn btn-outline-danger">Delete product</button>
+
+                    <div class="d-flex align-items-center bg-light p-2 rounded">
+                        <label for="quantity" class="me-2 mb-0"><b>Quantity: </b></label>
+                        <input [formControl]="quantity" type="number" id="quantity" class="form-control quantity-input">
+                        <button (click)="updateQuantity()" class="btn btn-success ms-2">Update</button>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

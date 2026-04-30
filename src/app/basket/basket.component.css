@@ -1,13 +1,34 @@
 .image-container {
-  width: 80px; /* Set consistent width */
-  height: 80px; /* Set consistent height */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  background-color: white;
+  padding: 5px;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Ensures images scale properly without distortion */
+  object-fit: contain;
+}
+
+.qty-control {
+  max-width: 130px;
+}
+
+.item-row {
+  transition: background-color 0.2s ease;
+}
+
+.item-row:hover {
+  background-color: #fcfcfc;
+}
+
+/* Mobile-Anpassungen */
+@media (max-width: 767px) {
+  .image-container {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+  }
 }

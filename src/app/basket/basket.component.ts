@@ -5,10 +5,11 @@ import { Basket } from '../core/models/basket';
 import { UserService } from '../user/user.service';
 import { ToastService } from '../core/toast/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-basket',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.css',
 })
@@ -16,6 +17,7 @@ export class BasketComponent {
   private basketService = inject(BasketService);
   private userService = inject(UserService);
   private toastService = inject(ToastService);
+
   basket: Basket | undefined | null;
 
   ngOnInit(): void {

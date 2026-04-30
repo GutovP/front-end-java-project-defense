@@ -1,0 +1,29 @@
+.container {
+  max-width: 1000px; /* Etwas breiter für die drei Aktionen */
+}
+
+/* Desktop: Dropdown Breite */
+.role-select {
+  width: 110px;
+}
+
+/* Mobile Optimierungen */
+@media (max-width: 767px) {
+  .mobile-user-row {
+    background-color: #fff;
+  }
+
+  .mobile-user-row:nth-child(even) {
+    background-color: #f9f9f9; /* Zebra-Look auch auf Mobile */
+  }
+
+  /* Damit die Buttons auf ganz schmalen Handys nicht quetschen */
+  .btn-sm {
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+/* Hover-Effekt für Tabelle */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}

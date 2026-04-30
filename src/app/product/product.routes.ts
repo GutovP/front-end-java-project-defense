@@ -4,7 +4,7 @@ import { AdminActivate } from '../shared/guards/admin.guard';
 export const PRODUCT_ROUTES: Routes = [
   {
     path: 'all',
-    loadComponent: () => import('../home/home.component').then((m) => m.HomeComponent),
+    loadComponent: () => import('../product/all-products/all-products.component').then((m) => m.AllProductsComponent),
   },
 
   {

@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../core/toast/toast.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { emailValidator } from '../../shared/validators/email-validator';
 
@@ -18,6 +18,7 @@ export class LoginComponent {
   private userService = inject(UserService);
   private toastService = inject(ToastService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, emailValidator()]],
@@ -30,7 +31,7 @@ export class LoginComponent {
   get password() {
     return this.loginForm.get('password');
   }
-
+  
   loginHandler() {
     if (this.loginForm.invalid) {
       return;
@@ -39,13 +40,11 @@ export class LoginComponent {
 
     this.userService.login(email!, password!).subscribe({
       next: (user) => {
-        this.toastService.activate(
-          `Successfully logged in with email: ${user.user.email}`
-        );
-        this.router.navigate(['/auth/profile']);
+        this.toastService.activate(`Welcome, ${user.user.firstName}! You are now logged in.`);
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.router.navigateByUrl(returnUrl);
       },
       error: (error: HttpErrorResponse) => {
-        
         this.toastService.activate(error.error.message);
         this.loginForm.reset();
       },

@@ -24,7 +24,7 @@ export class ProductDetailsComponent implements OnInit {
   private toastService = inject(ToastService);
   private router = inject(Router);
  
-  products: Product[] | undefined;
+  product: Product | undefined;
   basket: any[] = [];
 
   quantity = new FormControl(1);
@@ -43,8 +43,8 @@ export class ProductDetailsComponent implements OnInit {
       const name = params['name'];
 
       this.productService.getProductDetails(category, name).subscribe({
-        next: (products) => {
-          this.products = products;
+        next: (product) => {
+          this.product = product;
         },
         error: (error: HttpErrorResponse) => {
           console.error(error);

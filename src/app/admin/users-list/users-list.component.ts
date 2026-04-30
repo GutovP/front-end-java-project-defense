@@ -25,14 +25,13 @@ export class UsersListComponent implements OnInit {
   }
 
   loadAllUsers() {
-
     return this.adminService.getAllUsers().subscribe({
       next: (data) => {
         this.users = data;
         this.cdRef.detectChanges();
       },
       error: (err) => {
-        if (err.status === 401) {
+        if (err) {
           this.toastService.activate('Only admins can see the user list');
         }
       },
@@ -40,7 +39,6 @@ export class UsersListComponent implements OnInit {
   }
 
   updateRole(userId: string, newRole: string): void {
-   
     this.adminService.updateUserRole(userId, newRole).subscribe({
       next: () => {
         console.log(`Role updated for user ${userId} to ${newRole}`);
@@ -51,5 +49,8 @@ export class UsersListComponent implements OnInit {
         console.error(error.error.message);
       },
     });
+  }
+  deleteUser(arg0: string) {
+    throw new Error('Method not implemented.');
   }
 }

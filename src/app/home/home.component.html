@@ -1,23 +1,15 @@
-<div class="background-img">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-5 g-4">
-            <div class="col" *ngFor="let product of products">
-                <a [routerLink]="['/products', product.categoryName, product.name]"
-                    routerLinkActive="router-link-active">
-                    <div class="card text-center h-100">
-                        <img [src]="product.image" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{product.name}}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>€{{product.salePrice}}</b></li>                            
-                          </ul>
-                        <div class="card-footer">
-                            <small class="text-body-secondary">{{product.currentQuantity}} In stock</small>
-                        </div>
-                    </div>
-                </a>
-            </div>
+<div class="main parallax d-flex align-items-center justify-content-center">
+    <div class="container text-center my-text-color content-box">
+        <h1 class="display-4 fw-bold mb-4">
+            Welcome to my web application!
+        </h1>
+        <p class="lead mb-4">
+            Powered by <strong>Angular</strong>, <strong>Spring Boot</strong>, <strong>MySQL</strong> and <strong>Docker</strong>!
+        </p>
+        <div class="features">
+            <div class="feature-item">✓ CI/CD enabled</div>
+            <div class="feature-item">✓ Always up-to-date from GitHub</div>
+            <div class="feature-item">✓ Deployed in seconds after every change</div>
         </div>
     </div>
 </div>

@@ -1,0 +1,53 @@
+body {
+  box-sizing: border-box;
+}
+
+.background-img {
+  display: block;
+  width: 100vw; /* Full viewport width */
+  min-height: 100vh; /* Full viewport height */
+  background-image: url(../../../assets/img/flowers-banner-1024x307.jpg);
+  background-size: cover; /* Ensures the image covers the entire area */
+  background-repeat: no-repeat; /* Prevents tiling of the image */
+  background-position: center; /* Centers the image */
+  padding-bottom: 1rem;
+}
+
+.container a {
+  text-decoration: none;
+}
+
+.card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #635da8;
+}
+
+.card:hover .card-title {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .card-body {
+    padding: 0.5rem;
+  }
+
+  .card-title {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  .card-img-top {
+    object-fit: cover;
+  }
+
+  .list-group-item {
+    font-size: 0.85rem;
+    padding: 0.25rem;
+  }
+
+  .card-footer {
+    padding: 0.25rem;
+    font-size: 0.7rem;
+  }
+}
