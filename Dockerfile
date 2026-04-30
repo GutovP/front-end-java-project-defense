@@ -15,7 +15,7 @@ RUN npm run build
 FROM dhi.io/nginx:1.28.0-alpine3.21-dev
 
 # Copy built application from build stage
-COPY --from=build /app/dist/java-front-end/browser/* /usr/share/nginx/html/
+COPY --from=build /app/dist/java-front-end/browser /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 8082
