@@ -1,15 +1,47 @@
 <div class="main parallax d-flex align-items-center justify-content-center">
     <div class="container text-center my-text-color content-box">
         <h1 class="display-4 fw-bold mb-4">
-            Welcome to my web application!
+            Welcome to my Full-Stack Application
         </h1>
-        <p class="lead mb-4">
-            Powered by <strong>Angular</strong>, <strong>Spring Boot</strong>, <strong>MySQL</strong> and <strong>Docker</strong>!
+
+        <p class="lead mb-5">
+            A modern e-commerce solution powered by <br>
+            <span class="badge bg-dark">Angular 19</span> +
+            <span class="badge bg-dark">Spring Boot 3</span> +
+            <span class="badge bg-dark">Docker</span>
         </p>
-        <div class="features">
-            <div class="feature-item">✓ CI/CD enabled</div>
-            <div class="feature-item">✓ Always up-to-date from GitHub</div>
-            <div class="feature-item">✓ Deployed in seconds after every change</div>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Technische Features -->
+            <div class="col-md-4">
+                <div class="feature-item p-3">
+                    <i class="bi bi-rocket-takeoff fs-2 d-block mb-2"></i>
+                    <strong>CI/CD Workflow</strong>
+                    <p class="small">Automated deployment via GitHub Actions</p>
+                </div>
+            </div>
+
+            <!-- App Features -->
+            <div class="col-md-4">
+                <div class="feature-item p-3">
+                    <i class="bi bi-shield-lock fs-2 d-block mb-2"></i>
+                    <strong>Role-Based Access</strong>
+                    <p class="small">Secure JWT Authentication for Users & Admins</p>
+                </div>
+            </div>
+
+            <!-- Backend Features -->
+            <div class="col-md-4">
+                <div class="feature-item p-3">
+                    <i class="bi bi-database-check fs-2 d-block mb-2"></i>
+                    <strong>REST API & MySQL</strong>
+                    <p class="small">Dynamic data management with Spring Data JPA</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <a routerLink="/products/all" class="btn btn-primary btn-lg px-5 shadow">Explore Products</a>
         </div>
     </div>
 </div>
