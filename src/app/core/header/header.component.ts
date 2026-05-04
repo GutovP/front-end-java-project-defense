@@ -19,13 +19,13 @@ export class HeaderComponent implements OnInit {
   private productService = inject(ProductService);
   private router = inject(Router);
   get isLoggedIn(): boolean {
-    return this.userService.isLoggedIn;
+    return this.userService.isLoggedIn();
   }
   get isAdmin(): boolean {
     return this.userService.getUserRole() === 'ADMIN';
   }
   getFirstName(): string {
-    return this.userService.user?.firstName!;
+    return this.userService.currentUser?.firstName!;
   }
   public showProductNav = false;
   public navbarCollapsed = true;

@@ -87,7 +87,7 @@
 
                     <!-- Display Password Fields when in Edit Mode -->
                     <ng-container *ngIf="showEditMode['password']" class="flex-grow-1">
-                        <div class="w-100">
+                        <div class="w-100 d-flex flex-column gap-3">
                             <input formControlName="currentPassword" type="password" class="form-control me-2"
                                 placeholder="Current Password">
                             <p *ngIf="profileForm.get('currentPassword')?.touched && profileForm.get('currentPassword')?.hasError('required')"
@@ -115,10 +115,10 @@
                     </ng-container>
 
                     <!-- Edit / Save Buttons -->
-                    <div class="d-flex flex-column">
-                        <button class="btn btn-primary me-1" type="button" (click)="toggleEditMode('password')"
+                    <div class="d-flex flex-column ms-2">
+                        <button class="btn btn-primary me-2" type="button" (click)="toggleEditMode('password')"
                             *ngIf="!showEditMode['password']">Edit</button>
-                        <button class="btn btn-primary me-1" type="button" (click)="updateField('password')"
+                        <button class="btn btn-primary me-2" type="button" (click)="updateField('password')"
                             *ngIf="showEditMode['password']">Save</button>
                     </div>
                 </div>

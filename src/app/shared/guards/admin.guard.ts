@@ -25,7 +25,7 @@ export class AdminActivate implements CanActivate {
     const token = this.userService.getToken();
     const userRole = this.userService.getUserRole();
 
-    if (this.userService.isLoggedIn && !this.userService.isTokenExpired(token!) && userRole === 'ADMIN') {
+    if (this.userService.isLoggedIn() && !this.userService.isTokenExpired(token!) && userRole === 'ADMIN') {
 
       return true;
 

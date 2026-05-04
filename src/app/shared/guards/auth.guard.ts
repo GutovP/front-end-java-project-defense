@@ -1,4 +1,4 @@
-import { inject, Injectable, ɵflushModuleScopingQueueAsMuchAsPossible } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -22,7 +22,7 @@ export class AuthActivate implements CanActivate {
 
     const token = this.userService.getToken();
 
-    if (this.userService.isLoggedIn && !this.userService.isTokenExpired(token!)) {
+    if (this.userService.isLoggedIn() && !this.userService.isTokenExpired(token!)) {
       return true;
       
     } else {

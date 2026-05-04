@@ -5,7 +5,7 @@ import { Basket } from '../core/models/basket';
 import { UserService } from '../user/user.service';
 import { ToastService } from '../core/toast/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-basket',
@@ -17,10 +17,18 @@ export class BasketComponent {
   private basketService = inject(BasketService);
   private userService = inject(UserService);
   private toastService = inject(ToastService);
+  private router = inject(Router);
 
   basket: Basket | undefined | null;
 
+  get isAdmin() {
+    return this.userService.getUserRole() === 'ADMIN';
+  }
   ngOnInit(): void {
+    if(this.isAdmin) {
+      this.router.navigateByUrl('/products/all');
+    }
+    
     this.viewBasket();
   }
 

@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, Subscription, tap, throwError} from 'rxjs';
+import { HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import {catchError, Observable,tap, throwError} from 'rxjs';
 import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment.development';
@@ -11,18 +11,15 @@ const baseUrl = environment.apiURL;
 @Injectable({
   providedIn: 'root',
 })
-export class UserService implements OnDestroy {
+export class UserService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private user$$ = new BehaviorSubject<User | undefined>(undefined);
-  private user$ = this.user$$.asObservable();
-  user: User | undefined;
-  subscription: Subscription;
-
-  get isLoggedIn(): boolean {
-    return !!this.user;
+  private user = signal<User | undefined>(undefined);
+  get currentUser() {
+    return this.user();
   }
+  isLoggedIn = computed(() => !!this.user());
 
   constructor() {
     const storedUser = localStorage.getItem('user');
@@ -35,8 +32,16 @@ export class UserService implements OnDestroy {
       this.getProfile().subscribe();
     }
 
-    this.subscription = this.user$.subscribe((user) => {
-      this.user = user;
+    // using effect to react to user changes
+    effect(() => {
+
+      const currentUser = this.user();
+      if (currentUser) {
+        localStorage.setItem('user', JSON.stringify(currentUser));
+
+      } else {
+        localStorage.removeItem('user');
+      }
     });
   }
   getToken() {
@@ -49,11 +54,10 @@ export class UserService implements OnDestroy {
   }
 
   getUserRole() {
-    return this.user?.['role'] || '';
+    return this.user()?.['role'] || '';
   }
   storeUser(user: User): void {
-      localStorage.setItem('user', JSON.stringify(user));
-      this.user$$.next(user);
+      this.user.set(user);
   }
 
   register(firstName: string, lastName: string, email: string, password: string, rePassword: string): Observable<User> {
@@ -77,8 +81,7 @@ export class UserService implements OnDestroy {
       );
   }
   logout(): void {
-    this.user$$.next(undefined);
-    localStorage.removeItem('user');
+    this.user.set(undefined);
     localStorage.removeItem('token');
     this.router.navigate(['/auth/login']);
   }
@@ -112,7 +115,4 @@ export class UserService implements OnDestroy {
     return throwError(() => new Error(error.message));
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
 }
