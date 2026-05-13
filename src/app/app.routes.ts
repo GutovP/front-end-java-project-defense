@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { HomeComponent } from './home/home.component';
+import { ContactComponent } from './contact/contact.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import('./admin/users-list/users.routes').then((m) => m.USERS_ROUTES),
+  },
+
+  {
+    path: "contact", component: ContactComponent
   },
 
   {

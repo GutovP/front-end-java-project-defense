@@ -1,0 +1,48 @@
+<div class="container pt-4 custom-width">
+    <form [formGroup]="contactForm" (ngSubmit)="contactHandler()" class="bg-info p-4">
+        <fieldset>
+            <h2 class="text-center">Contact Form</h2>
+
+            <!-- Name -->
+            <div class="mt-3">
+                <label for="name">Name</label>
+                <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter Name">
+            </div>
+            <p *ngIf="name?.touched && name?.hasError('required')" class="error">
+                Name is required!
+            </p>
+
+            <!-- Email -->
+            <div class="mt-3">
+                <label for="email">Email</label>
+                <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email">
+            </div>
+            <p *ngIf="email?.touched && email?.hasError('required')" class="error">
+                Email is required!
+            </p>
+            <p *ngIf="email?.touched && email?.hasError('emailValidator')" class="error">
+                Email is not valid
+            </p>
+
+            <!-- Phone (Optional) -->
+            <div class="mt-3">
+                <label for="phone">Phone (optional)</label>
+                <input formControlName="phone" type="tel" class="form-control" id="phone" placeholder="Enter Phone Number">
+            </div>
+
+            <!-- Message -->
+            <div class="mt-3">
+                <label for="message">Message</label>
+                <textarea formControlName="message" class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
+            </div>
+            <p *ngIf="message?.touched && message?.hasError('required')" class="error">
+                Message is required!
+            </p>
+
+            <!-- Submit Button -->
+            <div class="d-grid col-6 mx-auto mt-4 mb-3">
+                <button [disabled]="contactForm.invalid" class="btn btn-primary">Send</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
