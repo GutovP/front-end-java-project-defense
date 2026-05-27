@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../core/toast/toast.service';
 import { UserService } from '../../user/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-list',
@@ -17,6 +19,7 @@ export class UsersListComponent implements OnInit {
   private cdRef = inject(ChangeDetectorRef);
   private toastService = inject(ToastService);
   private userService = inject(UserService);
+  private router = inject(Router);
 
   users: User[] | undefined;
 
@@ -50,7 +53,23 @@ export class UsersListComponent implements OnInit {
       },
     });
   }
-  deleteUser(arg0: string) {
-    throw new Error('Method not implemented.');
+  deleteUser(userId: string): void {
+    
+    this.adminService.deleteUser(userId).subscribe({
+      next: () => {
+        this.toastService.activate('User deleted from the DB.');
+      },
+      error: (error: HttpErrorResponse) => {
+
+        if (error.status === 401) {
+          this.toastService.activate(
+            'You have to log in as ADMIN to delete a user!'
+          );
+          this.router.navigate(['auth/login']);
+        } else {
+          this.toastService.activate(error.error.message);
+        }
+      }
+    })
   }
 }

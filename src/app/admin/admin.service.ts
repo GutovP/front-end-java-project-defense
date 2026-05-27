@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../core/models/user';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 
 
@@ -22,5 +22,8 @@ export class AdminService {
 
   updateUserRole(userId: string, newRole: string): Observable<any> {
     return this.http.put(`${baseUrl}/admin/${userId}/role?newRole=${newRole}`, {newRole});
+  }
+  deleteUser(userId:string) {
+    return this.http.delete(`${baseUrl}/admin/${userId}`);
   }
 }

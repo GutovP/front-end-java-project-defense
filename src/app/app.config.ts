@@ -9,9 +9,7 @@ import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(
-      routes,
-    withInMemoryScrolling({
+    provideRouter(routes, withInMemoryScrolling({
       scrollPositionRestoration: 'enabled'
     })
   ),
