@@ -1,19 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  NavigationEnd,
-  Router,
-  RouterModule,
-} from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 
 import { HeaderItems } from './header-items';
 import { UserService } from '../../user/user.service';
 import { Product } from '../models/product';
 import { ProductService } from '../../product/product.service';
-import { filter } from 'rxjs';
+import { BasketService } from '../../basket/basket.service'; // BasketService importiert
 
 @Component({
   selector: 'app-header',
+  standalone: true, // Explizit für Angular 19
   imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
@@ -21,27 +19,23 @@ import { filter } from 'rxjs';
 export class HeaderComponent implements OnInit {
   private userService = inject(UserService);
   private productService = inject(ProductService);
+  private basketService = inject(BasketService);
   private router = inject(Router);
-  get isLoggedIn(): boolean {
-    return this.userService.isLoggedIn();
-  }
-  get isAdmin(): boolean {
-    return this.userService.getUserRole() === 'ADMIN';
-  }
-  getFirstName(): string {
-    return this.userService.currentUser?.firstName!;
-  }
-  public showProductNav = false;
-  public navbarCollapsed = true;
+
+  
+  readonly isLoggedIn = this.userService.isLoggedIn;
+  readonly isAdmin = computed(() => this.userService.getUserRole() === 'ADMIN');
+  readonly basketCount = this.basketService.basketCount;
+  readonly firstName = computed(() => this.userService.currentUser()?.firstName || '');
+  readonly showProductNav = signal<boolean>(false);
+  readonly navbarCollapsed = signal<boolean>(true);
+  readonly categories = signal<Product[]>([]);
+
   headerItems: HeaderItems[] = [];
   authItems: HeaderItems[] = [];
   unAuthItems: HeaderItems[] = [];
-  categories: Product[] | undefined;
-  basketCount: number = 12;
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-
     this.headerItems = [
       { caption: 'Home', link: [''] },
       { caption: 'Flower shop', link: ['/products/all'] },
@@ -60,28 +54,30 @@ export class HeaderComponent implements OnInit {
     ];
 
     this.router.events
-      .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd,
-        ),
-      )
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.checkUrl(event.urlAfterRedirects);
       });
 
     this.getCategories();
-
     this.checkUrl(this.router.url);
+    
+    this.basketService.loadBasket();
   }
 
-  getCategories() {
-    return this.productService.getCategories().subscribe((categories) => {
-      this.categories = categories;
+  getCategories(): void {
+    this.productService.getCategories().subscribe((categories) => {
+      this.categories.set(categories || []);
     });
   }
 
-  checkUrl(url: string) {
+  checkUrl(url: string): void {
     const allowedPaths = ['/products', '/basket'];
-    this.showProductNav = allowedPaths.some((path) => url.includes(path));
+    const isAllowed = allowedPaths.some((path) => url.includes(path));
+    this.showProductNav.set(isAllowed); // Signal schreiben
+  }
+
+  toggleNavbar(): void {
+    this.navbarCollapsed.update(current => !current);
   }
 }
