@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse} from '@angular/common/http';
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import {catchError, Observable,tap, throwError} from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -15,56 +15,56 @@ export class UserService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private user = signal<User | undefined>(undefined);
-  get currentUser() {
-    return this.user();
-  }
-  isLoggedIn = computed(() => !!this.user());
+  private user = signal<User | null>(null);
+  readonly currentUser = this.user.asReadonly();
+  readonly isLoggedIn = computed(() => !!this.user());
+  readonly getUserRole = computed(() => this.user()?.role || '');
 
   constructor() {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      this.storeUser(JSON.parse(storedUser));
+    const setUser = localStorage.getItem('user');
+    if (setUser) {
+      this.user.set(JSON.parse(setUser));
     }
 
     const storedToken = localStorage.getItem('token');
-    if (storedToken && !storedUser) {
+    if (storedToken && !setUser) {
       this.getProfile().subscribe();
     }
-
-    // using effect to react to user changes
-    effect(() => {
-
-      const currentUser = this.user();
-      if (currentUser) {
-        localStorage.setItem('user', JSON.stringify(currentUser));
-
-      } else {
-        localStorage.removeItem('user');
-      }
-    });
   }
-  getToken() {
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 
   isTokenExpired(token: string): boolean {
-    const expiry = JSON.parse(atob(token.split('.')[1])).exp;
-    return Math.floor(new Date().getTime() / 1000) >= expiry;
+      if (!token) {
+      return true;
+    }
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const decodedPayload = decodeURIComponent(
+        atob(payloadBase64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      const expiry = JSON.parse(decodedPayload).exp;
+      return Math.floor(Date.now() / 1000) >= expiry;
+
+    } catch (e) {
+      return true; 
+    }
   }
 
-  getUserRole() {
-    return this.user()?.['role'] || '';
-  }
-  storeUser(user: User): void {
+  setUser(user: User): void {
       this.user.set(user);
+      localStorage.setItem('user', JSON.stringify(user));
   }
 
   register(firstName: string, lastName: string, email: string, password: string, rePassword: string): Observable<User> {
     return this.http.post<User>(`${baseUrl}/auth/register`, { firstName, lastName, email, password, rePassword }, { withCredentials: true })
       .pipe(
         tap((user) => {
-          this.storeUser(user);
+          this.setUser(user);
         }),
         catchError(this.errorHandler)
       );
@@ -75,32 +75,35 @@ export class UserService {
       .pipe(
         tap((response) => {
           localStorage.setItem('token', response.token);
-          this.storeUser(response.user);
+          this.setUser(response.user);
         }),
         catchError(this.errorHandler)
       );
   }
   logout(): void {
-    this.user.set(undefined);
+    this.user.set(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.router.navigate(['/auth/login']);
   }
   getProfile(): Observable<User> {
     return this.http.get<User>(`${baseUrl}/user/profile`, { withCredentials: true })
       .pipe(
         tap((user) => {
-          this.storeUser(user);
+          this.setUser(user);
         }),
         catchError(this.errorHandler)
       );
   }
 
   updateProfile(firstName: string, lastName: string, email: string): Observable<User> {
+
     const updatePayload: Partial<User> = { firstName, lastName, email };
+
     return this.http.put<User>(`${baseUrl}/user/profile`, updatePayload, {withCredentials: true,})
       .pipe(
         tap((user) => {
-          this.storeUser(user);
+          this.setUser(user);
         }),
         catchError(this.errorHandler)
       );
@@ -112,7 +115,7 @@ export class UserService {
   }
 
   errorHandler(error: HttpErrorResponse): Observable<never> {
-    return throwError(() => new Error(error.message));
+    return throwError(() => new Error(error.error?.message || error.message || 'Server Error'));
   }
 
 }
