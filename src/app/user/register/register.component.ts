@@ -6,11 +6,11 @@ import { passwordGroupValidator } from '../../shared/validators/password-group-v
 import { ToastService } from '../../core/toast/toast.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })

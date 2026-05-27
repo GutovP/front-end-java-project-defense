@@ -1,23 +1,25 @@
 <div class="background-img">
-    <div class="container mt-3">
-        <div class="row row-cols-2 row-cols-md-5 g-2 g-md-4">
-            <div class="col" *ngFor="let product of products">
-                <a [routerLink]="['/products', product.categoryName, product.name]"
-                    routerLinkActive="router-link-active">
-                    <div class="card text-center h-100">
-                        <img [src]="product.image" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{product.name}}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>€{{product.salePrice}}</b></li>                            
-                          </ul>
-                        <div class="card-footer">
-                            <small class="text-body-secondary">{{product.currentQuantity}} In stock</small>
-                        </div>
-                    </div>
-                </a>
+  <div class="container mt-3">
+    <div class="row row-cols-2 row-cols-md-5 g-2 g-md-4">
+      @for (product of products; track product) {
+        <div class="col">
+          <a [routerLink]="['/products', product.categoryName, product.name]"
+            routerLinkActive="router-link-active">
+            <div class="card text-center h-100">
+              <img [src]="product.image" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>€{{product.salePrice}}</b></li>
+              </ul>
+              <div class="card-footer">
+                <small class="text-body-secondary">{{product.currentQuantity}} In stock</small>
+              </div>
             </div>
+          </a>
         </div>
+      }
     </div>
+  </div>
 </div>

@@ -3,11 +3,11 @@ import { ProductService } from '../product.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../../core/models/product';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-category-details',
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './category-details.component.html',
   styleUrl: './category-details.component.css'
 })

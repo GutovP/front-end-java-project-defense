@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -8,7 +8,7 @@ import { UserService } from '../../user/user.service';
 
 @Component({
   selector: 'app-all-products',
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './all-products.component.html',
   styleUrl: './all-products.component.css'
 })

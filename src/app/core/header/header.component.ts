@@ -1,6 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterEvent, RouterModule } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
 
 import { HeaderItems } from './header-items';
 import { UserService } from '../../user/user.service';
@@ -33,6 +37,7 @@ export class HeaderComponent implements OnInit {
   authItems: HeaderItems[] = [];
   unAuthItems: HeaderItems[] = [];
   categories: Product[] | undefined;
+  basketCount: number = 12;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -54,14 +59,18 @@ export class HeaderComponent implements OnInit {
       { caption: 'Register', link: ['/auth/register'] },
     ];
 
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.checkUrl(event.urlAfterRedirects);
-    });
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.checkUrl(event.urlAfterRedirects);
+      });
 
     this.getCategories();
-    
+
     this.checkUrl(this.router.url);
   }
 
@@ -73,7 +82,6 @@ export class HeaderComponent implements OnInit {
 
   checkUrl(url: string) {
     const allowedPaths = ['/products', '/basket'];
-    this.showProductNav = allowedPaths.some(path => url.includes(path));
+    this.showProductNav = allowedPaths.some((path) => url.includes(path));
   }
-  
 }

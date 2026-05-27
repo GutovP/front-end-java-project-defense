@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { emailValidator } from '../../shared/validators/email-validator';
-import { CommonModule } from '@angular/common';
+
 import { ProfileDetails, User } from '../../core/models/user';
 import { passwordGroupValidator } from '../../shared/validators/password-group-validator';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })

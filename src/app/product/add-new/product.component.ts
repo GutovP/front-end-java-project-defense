@@ -2,14 +2,14 @@ import { Component, inject } from '@angular/core';
 import { ProductService } from '../product.service';
 import { ToastService } from '../../core/toast/toast.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { UserService } from '../../user/user.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-product',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })

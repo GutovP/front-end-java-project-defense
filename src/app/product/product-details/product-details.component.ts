@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from '../../core/toast/toast.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { Product } from '../../core/models/product';
 
 @Component({
   selector: 'app-product-details',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })

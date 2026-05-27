@@ -52,6 +52,37 @@
   color: #000000;
 }
 
+.cart-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.cart-badge {
+  position: absolute;
+  /* Positions the badge on the top right edge of the basket icon */
+  top: -6px;
+  right: -10px;
+  
+  /* Layout & Font sizing */
+  font-size: 0.7rem; 
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #dc3545; /* Bootstrap Red */
+  
+  /* Circular/Capsule bounding box */
+  height: 18px;
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 10px; /* Changes to a capsule if numbers grow wide */
+  border: 2px solid #ffffff; /* Gives space separation over the black icon */
+  
+  /* Flexbox alignment to perfectly center the text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* mobile */
 @media (max-width: 991px) {
   .container-fluid {
