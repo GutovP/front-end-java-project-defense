@@ -1,9 +1,11 @@
 <header class="sticky-top p-0">
   <nav class="navbar navbar-expand-lg navbar-light custom-nav">
     <div class="container-fluid">
+      
+      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#appNavbar"
-        (click)="navbarCollapsed() = !navbarCollapsed()" [attr.aria-expanded]="!navbarCollapsed"
-        aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        [attr.aria-expanded]="!navbarCollapsed()"
+        aria-controls="appNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -13,9 +15,9 @@
           <!-- Top row -->
           <div class="d-lg-flex align-items-center w-100 main-row">
             <ul class="navbar-nav">
-              @for (item of headerItems; track item) {
+              @for (item of headerItems; track item.caption) {
                 <li class="nav-item">
-                  <a class="nav-link menu-btn" [routerLink]="item.link" routerLinkActive="active-link"
+                  <a [routerLink]="item.link" routerLinkActive="active-link"
                     [routerLinkActiveOptions]="{exact: true}" class="nav-link menu-btn"
                     data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
                     {{item.caption}}
@@ -26,80 +28,84 @@
 
             <div class="ms-auto"></div>
 
-            @if (isLoggedIn) {
+            @if (isLoggedIn()) {
               <div class="ms-auto d-none d-lg-block px-3">
-                Hello, {{getFirstName()}} @if (isAdmin) {
-                <span>(ADMIN)</span>
-              }
-            </div>
-          }
-
-          <ul class="navbar-nav">
-            @if (!isLoggedIn) {
-              @for (item of unAuthItems; track item) {
-                <li class="nav-item">
-                  <a class="nav-link menu-btn" [routerLink]="item.link" routerLinkActive="active-link"
-                    data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse.show">{{item.caption}}
-                  </a>
-                </li>
-              }
+                Hello, {{ firstName() }} 
+                @if (isAdmin()) {
+                  <span>(ADMIN)</span>
+                }
+              </div>
             }
-            @if (isLoggedIn) {
-              @for (item of authItems; track item) {
-                <li class="nav-item">
-                  <a class="nav-link menu-btn" [routerLink]="item.link" routerLinkActive="active-link"
-                    data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse.show">{{item.caption}}
-                  </a>
-                </li>
-              }
-            }
-          </ul>
-        </div>
 
-        <!-- Category row -->
-        @if (showProductNav) {
-          <div class="d-lg-flex align-items-center w-100 product-row">
-            <ul class="navbar-nav me-auto">
-              @for (category of categories; track category) {
-                <li class="nav-item">
-                  <a class="nav-link cat-link" [routerLink]="['/products', category]"
-                    routerLinkActive="active-link" data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse.show">
-                    {{category}}
-                  </a>
-                </li>
-              }
-            </ul>
             <ul class="navbar-nav">
-              @if (isAdmin) {
-                <li class="nav-item">
-                  <a class="nav-link menu-btn secondary" routerLink="/products/add-new"
-                    routerLinkActive="active-link" data-bs-toggle="collapse"
-                  data-bs-target=".navbar-collapse.show">Add New Product</a>
-                </li>
+              @if (!isLoggedIn()) {
+                @for (item of unAuthItems; track item.caption) {
+                  <li class="nav-item">
+                    <a class="nav-link menu-btn" [routerLink]="item.link" routerLinkActive="active-link"
+                      data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+                      {{item.caption}}
+                    </a>
+                  </li>
+                }
               }
-              @if (!isAdmin) {
-                <li class="nav-item">
-                  <a class="nav-link menu-btn secondary" routerLink="/basket/view"
-                    routerLinkActive="active-link" data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse.show">
-                    <div class="cart-container">
-                      <i class="bi bi-basket3 fs-2"></i>
-                      @if (basketCount > 0) {
-                        <span class="cart-badge">{{ basketCount }}</span>
-                      }
-                    </div>
-                  </a>
-                </li>
+              
+              @if (isLoggedIn()) {
+                @for (item of authItems; track item.caption) {
+                  <li class="nav-item">
+                    <a class="nav-link menu-btn" [routerLink]="item.link" routerLinkActive="active-link"
+                      data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+                      {{item.caption}}
+                    </a>
+                  </li>
+                }
               }
             </ul>
           </div>
-        }
 
+          <!-- Category row -->
+          @if (showProductNav()) {
+            <div class="d-lg-flex align-items-center w-100 product-row">
+              <ul class="navbar-nav me-auto">
+                @for (category of categories(); track category) {
+                  <li class="nav-item">
+                    <a class="nav-link cat-link" [routerLink]="['/products', category]"
+                      routerLinkActive="active-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+                      {{category}}
+                    </a>
+                  </li>
+                }
+              </ul>
+              
+              <ul class="navbar-nav">
+                @if (isAdmin()) {
+                  <li class="nav-item">
+                    <a class="nav-link menu-btn secondary" routerLink="/products/add-new"
+                      routerLinkActive="active-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+                      Add New Product
+                    </a>
+                  </li>
+                }
+                
+                @if (!isAdmin()) {
+                  <li class="nav-item">
+                    <a class="nav-link menu-btn secondary" routerLink="/basket"
+                      routerLinkActive="active-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+                      <div class="cart-container">
+                        <i class="bi bi-basket3 fs-2"></i>
+                        @if (basketCount() > 0) {
+                          <span class="cart-badge">{{ basketCount() }}</span>
+                        }
+                      </div>
+                    </a>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+        </div>
       </div>
+      
     </div>
-  </div>
-</nav>
+  </nav>
 </header>
