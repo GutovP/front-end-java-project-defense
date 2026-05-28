@@ -13,17 +13,16 @@ const baseUrl = environment.apiURL;
 export class AdminService {
   private http = inject(HttpClient)
 
-  constructor() { }
-
   getAllUsers(): Observable<User[]> {
     
     return this.http.get<User[]>(`${baseUrl}/admin/users`);
   }
 
-  updateUserRole(userId: string, newRole: string): Observable<any> {
-    return this.http.put(`${baseUrl}/admin/${userId}/role?newRole=${newRole}`, {newRole});
+  updateUserRole(userId: string, newRole: string): Observable<void> {
+    return this.http.put<void>(`${baseUrl}/admin/${userId}/role?newRole=${newRole}`, {});
   }
-  deleteUser(userId:string) {
-    return this.http.delete(`${baseUrl}/admin/${userId}`);
+
+  deleteUser(userId:string): Observable<void> {
+    return this.http.delete<void>(`${baseUrl}/admin/${userId}`);
   }
 }
