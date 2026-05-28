@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../core/models/product';
 
@@ -37,10 +37,12 @@ export class ProductService {
 
     return this.http.put<Product>(`${baseUrl}/products/${category}/${name}`, {quantity});
   }
-  getCategories(): Observable<Product[]> {
 
-    return this.http.get<Product[]>(`${baseUrl}/products/categories`);
+  getCategories(): Observable<string[]> {
+
+    return this.http.get<string[]>(`${baseUrl}/products/categories`);
   }
+
   deleteProduct(productId: string): Observable<any> {
 
     return this.http.delete(`${baseUrl}/products/${productId}`);
