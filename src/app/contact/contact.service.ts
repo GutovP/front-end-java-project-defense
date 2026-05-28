@@ -11,11 +11,10 @@ const baseURL = environment.notificationURL;
 export class ContactService {
 
   private http = inject(HttpClient);
-  constructor() { }
 
-  sendMessage(name:string, email:string, message:string, phoneNumber?:string): Observable<any> {
+  sendMessage(name:string, email:string, message:string, phoneNumber?:string): Observable<void> {
 
-    return this.http.post(`${baseURL}/notifications`, {name, email, phoneNumber, message});
+    return this.http.post<void>(`${baseURL}/notifications`, {name, email, phoneNumber, message});
   }
 
 }
