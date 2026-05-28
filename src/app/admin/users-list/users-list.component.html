@@ -16,7 +16,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (user of users; track user) {
+            @for (user of users(); track user) {
               <tr>
                 <td class="ps-4"><strong>{{ user.email }}</strong></td>
                 <td>
@@ -45,7 +45,7 @@
 
       <!-- Mobile -->
       <div class="d-block d-md-none">
-        @for (user of users; track user) {
+        @for (user of users(); track user) {
           <div class="p-3 border-bottom mobile-user-row">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <div class="fw-bold text-truncate" style="max-width: 70%;">{{ user.email }}</div>

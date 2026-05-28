@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../user/user.service';
 import { ToastService } from '../core/toast/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-basket',
@@ -16,7 +16,6 @@ export class BasketComponent implements OnInit {
   private basketService = inject(BasketService);
   private userService = inject(UserService);
   private toastService = inject(ToastService);
-  private router = inject(Router);
 
   basket = this.basketService.basket;
   readonly isAdmin = computed(() => this.userService.getUserRole() === 'ADMIN');
