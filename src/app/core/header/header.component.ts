@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   readonly firstName = computed(() => this.userService.currentUser()?.firstName || '');
   readonly showProductNav = signal<boolean>(false);
   readonly navbarCollapsed = signal<boolean>(true);
-  readonly categories = signal<Product[]>([]);
+  readonly categories = signal<string[]>([]);
 
   headerItems: HeaderItems[] = [];
   authItems: HeaderItems[] = [];
