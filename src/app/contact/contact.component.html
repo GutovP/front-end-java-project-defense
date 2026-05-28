@@ -8,7 +8,7 @@
         <label for="name">Name</label>
         <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter Name">
       </div>
-      @if (name?.touched && name?.hasError('required')) {
+      @if (name()?.touched && name()?.hasError('required')) {
         <p class="error">
           Name is required!
         </p>
@@ -19,12 +19,12 @@
         <label for="email">Email</label>
         <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email">
       </div>
-      @if (email?.touched && email?.hasError('required')) {
+      @if (email()?.touched && email()?.hasError('required')) {
         <p class="error">
           Email is required!
         </p>
       }
-      @if (email?.touched && email?.hasError('emailValidator')) {
+      @if (email()?.touched && email()?.hasError('emailValidator')) {
         <p class="error">
           Email is not valid
         </p>
@@ -41,7 +41,7 @@
         <label for="message">Message</label>
         <textarea formControlName="message" class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
       </div>
-      @if (message?.touched && message?.hasError('required')) {
+      @if (message()?.touched && message()?.hasError('required')) {
         <p class="error">
           Message is required!
         </p>
