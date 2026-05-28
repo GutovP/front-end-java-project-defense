@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit {
   checkUrl(url: string): void {
     const allowedPaths = ['/products', '/basket'];
     const isAllowed = allowedPaths.some((path) => url.includes(path));
-    this.showProductNav.set(isAllowed); // Signal schreiben
+    this.showProductNav.set(isAllowed);
   }
 
   toggleNavbar(): void {
