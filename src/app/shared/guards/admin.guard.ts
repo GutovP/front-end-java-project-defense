@@ -1,11 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { ToastService } from '../../core/toast/toast.service';
 
-@Injectable({
-  providedIn: 'root',
-})
 export const AdminActivate: CanActivateFn = (route, state) => {
 
   const userService = inject(UserService);
