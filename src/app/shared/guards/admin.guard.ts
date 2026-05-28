@@ -1,39 +1,29 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  GuardResult,
-  MaybeAsync,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { ToastService } from '../../core/toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AdminActivate implements CanActivate {
-  private userService = inject(UserService);
-  private router = inject(Router);
-  private toastService = inject(ToastService);
+export const AdminActivate: CanActivateFn = (route, state) => {
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): MaybeAsync<GuardResult> {
-    const token = this.userService.getToken();
-    const userRole = this.userService.getUserRole();
+  const userService = inject(UserService);
+  const router = inject(Router);
+  const toastService = inject(ToastService);
 
-    if (this.userService.isLoggedIn() && !this.userService.isTokenExpired(token!) && userRole === 'ADMIN') {
+  const token = userService.getToken();
+  const userRole = userService.getUserRole();
+
+  if (userService.isLoggedIn() && !userService.isTokenExpired(token!) && userRole === 'ADMIN') {
 
       return true;
 
     } else {
 
-      this.toastService.activate('Only administrators can access this page.');
-      return this.router.createUrlTree(['/auth/login']);
-      
+      toastService.activate('Only administrators can access this page.');
+      return router.createUrlTree(['/auth/login']);
+
     }
-  }
+  
 }
