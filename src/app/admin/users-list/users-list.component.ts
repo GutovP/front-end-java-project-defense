@@ -13,18 +13,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css',
 })
-export class UsersListComponent implements OnInit {
+export class UsersListComponent {
   private adminService = inject(AdminService);
   private toastService = inject(ToastService);
   private userService = inject(UserService);
 
   users = signal<User[]>([]);
 
-  ngOnInit(): void {
-    this.loadAllUsers();
-  }
-
-  loadAllUsers(): void {
+  
+  constructor () { 
     this.adminService.getAllUsers().subscribe({
       next: (data) => {
         this.users.set(data || []);
