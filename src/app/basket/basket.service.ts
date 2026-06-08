@@ -20,7 +20,6 @@ export class BasketService {
     if (!basket || !basket.items) {
       return 0;
     }
-
     return basket.items.reduce((total, item) => total + item.quantity, 0);
   });
 

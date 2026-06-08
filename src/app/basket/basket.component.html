@@ -1,6 +1,6 @@
 <div class="container mt-5 px-3">
 
-  @if (!basket() || !basket()?.items || basket()?.items?.length === 0) {
+  @if (basket()) {
   <!-- Empty State View -->
   <div class="text-center py-5">
     <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
