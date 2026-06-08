@@ -41,9 +41,9 @@ export class ProductService {
     return this.http.get<string[]>(`${baseUrl}/products/categories`);
   }
 
-  deleteProduct(productId: string): Observable<any> {
+  deleteProduct(productId: string): Observable<void> {
 
-    return this.http.delete(`${baseUrl}/products/${productId}`);
+    return this.http.delete<void>(`${baseUrl}/products/${productId}`);
   }
 
 }
