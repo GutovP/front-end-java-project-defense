@@ -1,6 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, input, OnInit, signal } from '@angular/core';
 import { ProductService } from '../product.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../../core/models/product';
 
@@ -11,30 +11,25 @@ import { Product } from '../../core/models/product';
   templateUrl: './category-details.component.html',
   styleUrl: './category-details.component.css'
 })
-export class CategoryDetailsComponent implements OnInit{
+export class CategoryDetailsComponent {
 
   private productService = inject(ProductService);
-  private activatedRoute = inject(ActivatedRoute);
-  products: Product[] | undefined;
+  
+  readonly products = signal<Product[]>([]);
+  category = input.required<string>();
 
-  ngOnInit(): void {
-      this.getCategoryDetails();
-  }
-
-  getCategoryDetails(): void {
-
-    this.activatedRoute.params.subscribe((params) => {
-          const category = params['category'];
+  constructor () {
     
-          this.productService.getProductsByCategory(category).subscribe({
+    effect( () => {
+      this.productService.getProductsByCategory(this.category()).subscribe({
             next: (products) => {
-              this.products = products;
+              this.products.set(products);
             },
             error: (error: HttpErrorResponse) => {
               console.error(error);
             },
           });
-        });
+    })
   }
 
 }

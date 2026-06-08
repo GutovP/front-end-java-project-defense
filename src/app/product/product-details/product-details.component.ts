@@ -48,7 +48,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   updateQuantity(): void {
-      const quantity = this.quantity.getRawValue();
+      const quantity = this.quantity.value;
 
       this.productService
         .updateProductQuantity(this.category(), this.name(), quantity)
