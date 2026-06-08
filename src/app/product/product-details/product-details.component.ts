@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -15,7 +15,7 @@ import { Product } from '../../core/models/product';
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent {
  
   private productService = inject(ProductService);
   private userService = inject(UserService);
@@ -32,12 +32,10 @@ export class ProductDetailsComponent implements OnInit {
   category = input.required<string>();
   name = input.required<string>();
 
-  ngOnInit(): void {
-    this.getDetails();
-  }
+ constructor () {
 
-  getDetails(): void {
-      this.productService.getProductDetails(this.category(), this.name()).subscribe({
+  effect(() => {
+    this.productService.getProductDetails(this.category(), this.name()).subscribe({
         next: (product) => {
           this.product.set(product);
         },
@@ -45,7 +43,8 @@ export class ProductDetailsComponent implements OnInit {
           console.error(error);
         },
       });
-  }
+  })
+ }
 
   updateQuantity(): void {
       const quantity = this.quantity.value;
