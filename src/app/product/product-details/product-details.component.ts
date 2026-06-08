@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ProductService } from '../product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../user/user.service';
 import { BasketService } from '../../basket/basket.service';
 import { Product } from '../../core/models/product';
+import { Basket } from '../../core/models/basket';
 
 @Component({
   selector: 'app-product-details',
@@ -24,14 +25,12 @@ export class ProductDetailsComponent implements OnInit {
   private toastService = inject(ToastService);
   private router = inject(Router);
  
-  product: Product | undefined;
-  basket: any[] = [];
+  product = signal<Product | null>(null);
+  basket = signal<Basket | null>(null);
 
   quantity = new FormControl(1);
 
-  get isAdmin(): boolean {
-    return this.userService.getUserRole() === 'ADMIN';
-  }
+  readonly isAdmin = computed(() => this.userService.getUserRole() === 'ADMIN');
 
   ngOnInit(): void {
     this.getDetails();
@@ -44,7 +43,7 @@ export class ProductDetailsComponent implements OnInit {
 
       this.productService.getProductDetails(category, name).subscribe({
         next: (product) => {
-          this.product = product;
+          this.product.set(product);
         },
         error: (error: HttpErrorResponse) => {
           console.error(error);
@@ -58,7 +57,7 @@ export class ProductDetailsComponent implements OnInit {
       const category = params['category'];
       const name = params['name'];
 
-      const quantity = this.quantity.value;
+      const quantity = this.quantity.getRawValue();
 
       this.productService
         .updateProductQuantity(category, name, quantity!)
@@ -77,7 +76,7 @@ export class ProductDetailsComponent implements OnInit {
     this.basketService.addToBasket(productId, 1).subscribe({
       next: (response) => {
         this.toastService.activate('Product added to basket.');
-        this.basket.push(response);
+        this.basket.set(response);
       },
       error: (error: HttpErrorResponse) => {
         if (error.status === 401) {

@@ -12,8 +12,6 @@ const baseUrl = environment.apiURL;
 export class ProductService {
   private http = inject(HttpClient);
 
-  constructor() {}
-
   getProducts(): Observable<Product[]> {
 
     return this.http.get<Product[]>(`${baseUrl}/products`);
