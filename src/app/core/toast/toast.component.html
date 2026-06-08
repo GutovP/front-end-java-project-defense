@@ -1,6 +1,10 @@
-<div id="toast" class="toast-container">
+@if (toast(); as current) {
+  <div class="toast-container visible">
     <div class="toast-card mdl-shadow--16dp">
-        <h5 class="toast-title">{{title}}</h5>
-        <p class="toast-message">{{message}}</p>
+      @if (current.title) {
+        <h5 class="toast-title">{{ current.title }}</h5>
+      }
+      <p class="toast-message">{{ current.message }}</p>
     </div>
-</div>
+  </div>
+}
