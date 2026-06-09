@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ProductService } from '../product.service';
 import { ToastService } from '../../core/toast/toast.service';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { UserService } from '../../user/user.service';
 import { Router } from '@angular/router';
@@ -16,45 +16,52 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ProductComponent {
   private productService = inject(ProductService);
   private toastService = inject(ToastService);
-  private formBuilder = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private userService = inject(UserService);
   private router = inject(Router);
 
-  productForm = this.formBuilder.group({
+  readonly isLoading = signal<boolean>(false);
+
+  productForm = this.fb.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    salePrice: [0, [Validators.required]],
+    salePrice: [0, [Validators.required, Validators.min(0.01)]],
     imageUrl: ['', [Validators.required]],
     category: ['', [Validators.required]],
-    quantity: [1, [Validators.required]],
+    quantity: [1, [Validators.required, Validators.min(1)]],
   });
 
   productHandler() {
-    if (this.productForm.invalid) {
+
+    if (this.productForm.invalid || this.isLoading()) {
       return;
     }
 
-    const { name, description, salePrice, imageUrl, category, quantity } =
-      this.productForm.value;
+    this.isLoading.set(true);
+
+    const productData = this.productForm.getRawValue();
 
     this.productService
       .addProduct(
-        name!,
-        description!,
-        salePrice!,
-        imageUrl!,
-        category!,
-        quantity!,
-      )
-      .subscribe({
-        next: (product) => {
+        productData.name, 
+        productData.description, 
+        productData.salePrice, 
+        productData.imageUrl, 
+        productData.category, 
+        productData.quantity)
+        .subscribe({
+
+        next: () => {
           this.toastService.activate('Product added successfully');
+          this.productForm.reset();
+          this.isLoading.set(false);
         },
         error: (error: HttpErrorResponse) => {
+          this.isLoading.set(false);
           if (error.status === 401) {
             this.handleUnauthorized();
           } else {
-            this.toastService.activate(error.error.message);
+            this.toastService.activate(error.error.message || 'An error occurred');
           }
         },
       });

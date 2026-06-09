@@ -1,7 +1,7 @@
 <div class="background-img">
   <div class="container mt-3">
     <div class="row row-cols-2 row-cols-md-5 g-2 g-md-4">
-      @for (product of products; track product) {
+      @for (product of products(); track product.id) {
         <div class="col">
           <a [routerLink]="['/products', product.categoryName, product.name]"
             routerLinkActive="router-link-active">
