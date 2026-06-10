@@ -5,13 +5,12 @@ import { filter } from 'rxjs';
 
 import { HeaderItems } from './header-items';
 import { UserService } from '../../user/user.service';
-import { Product } from '../models/product';
 import { ProductService } from '../../product/product.service';
 import { BasketService } from '../../basket/basket.service'; // BasketService importiert
 
 @Component({
   selector: 'app-header',
-  standalone: true, // Explizit für Angular 19
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',

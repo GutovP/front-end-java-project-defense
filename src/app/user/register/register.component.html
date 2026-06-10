@@ -8,84 +8,95 @@
         <label for="firstName">First name</label>
         <input formControlName="firstName" type="text" class="form-control" id="firstName"
           placeholder="Enter first name">
-        </div>
-        @if (firstname?.touched && firstname?.hasError('required')) {
-          <p
-            class="error">
+
+        @if (controls.firstName.touched && controls.firstName.hasError('required')) {
+        <p class="error">
           First name is required! </p>
         }
-        @if (firstname?.hasError('minlength') || firstname?.hasError('maxlength')) {
-          <p
-            class="error">
+        @if (controls.firstName.touched && controls.firstName.hasError('minlength') || controls.firstName.hasError('maxlength')) {
+        <p class="error">
           First name length must be between 3 and 20 characters!</p>
         }
+      </div>
 
-        <!-- lastName -->
+      <!-- lastName -->
+      <div class="mt-3">
+        <label for="lastName">Last name</label>
+        <input formControlName="lastName" type="text" class="form-control" id="lastName" placeholder="Enter last name">
+
+        @if (controls.lastName.touched && controls.lastName.hasError('required')) {
+        <p class="error">
+          Last name is required! </p>
+        }
+        @if (controls.lastName.touched && controls.lastName.hasError('minlength') || controls.lastName.hasError('maxlength')) {
+        <p class="error">
+          Last name length must be between 3 and 20 characters!</p>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="mt-3">
+        <label for="email">Email</label>
+        <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email"
+          autocomplete="new-password">
+
+        @if (controls.email.touched && controls.email.hasError('required')) {
+        <p class="error">
+          Email is required! </p>
+        }
+        @if (controls.email.hasError('emailValidator')) {
+        <p class="error">
+          Email is not valid</p>
+        }
+      </div>
+
+      <!-- Password Group -->
+      <div formGroupName="pass">
+
+        <!-- Password -->
         <div class="mt-3">
-          <label for="lastName">Last name</label>
-          <input formControlName="lastName" type="text" class="form-control" id="lastName"
-            placeholder="Enter last name">
-          </div>
-          @if (lastname?.touched && lastname?.hasError('required')) {
-            <p
-              class="error">
-            Last name is required! </p>
+          <label for="password">Password</label>
+          <input formControlName="password" type="password" class="form-control" id="password"
+            placeholder="Enter Password">
+          @if (passControls.password.touched && passControls.password.hasError('required')) {
+          <p class="error">
+            Password is required!
+          </p>
           }
-          @if (lastname?.hasError('minlength') || lastname?.hasError('maxlength')) {
-            <p
-              class="error">
-            Last name length must be between 3 and 20 characters!</p>
+          @if (passControls.password.hasError('minlength') || passControls.password.hasError('maxlength')) {
+          <p class="error">
+            Password length must be between 6 and 20 characters!
+          </p>
           }
-
-          <!-- Email -->
-          <div class="mt-3">
-            <label for="email">Email</label>
-            <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email" autocomplete="new-password" >
-          </div>
-          @if (email?.touched && email?.hasError('required')) {
-            <p
-              class="error">
-            Email is required! </p>
-          }
-          @if (email?.hasError('emailValidator')) {
-            <p class="error">
-            Email is not valid</p>
-          }
-
-          <!-- Password -->
-          <div class="mt-3" formGroupName="pass">
-            <label for="password">Password</label>
-            <input formControlName="password" type="password" class="form-control" id="password"
-              placeholder="Enter Password">
-              @if (password?.touched && password?.hasError('required')) {
-                <p
-                  class="error">
-                  Password is required!
-                </p>
-              }
-              @if (password?.hasError('minlength') || password?.hasError('maxlength')) {
-                <p
-                  class="error">
-                  Password length must be between 6 and 20 characters!
-                </p>
-              }
-
-              <!-- rePassword -->
-              <div class="mt-3">
-                <label for="rePassword">Repeat Password</label>
-                <input formControlName="rePassword" type="password" class="form-control" id="rePassword"
-                  placeholder="ReEnter Password">
-                </div>
-                @if (rePassword?.hasError('passwordGroupValidator')) {
-                  <p class="error">
-                    Password not match!
-                  </p>
-                }
-              </div>
-
-              <div class="d-grid col-6 mx-auto mt-3 mb-3">
-                <button [disabled]="registerForm.invalid" class="btn btn-primary">Create Account</button>
-              </div>
-            </fieldset>
-          </form>
         </div>
+
+        <!-- rePassword -->
+        <div class="mt-3">
+          <label for="rePassword">Repeat Password</label>
+          <input formControlName="rePassword" type="password" class="form-control" id="rePassword"
+            placeholder="ReEnter Password">
+
+           @if (passControls.rePassword.touched && passControls.rePassword.hasError('required')) {
+            <p class="error">Repeat password is required!</p>
+          }
+
+          @if (passControls.rePassword.touched && passControls.rePassword.hasError('passwordGroupValidator')) {
+          <p class="error">
+            Passwords do not match!
+          </p>
+          }
+        </div>
+      </div>
+
+      <div class="d-grid col-6 mx-auto mt-3 mb-3">
+        <button [disabled]="registerForm.invalid || isLoading()" class="btn btn-primary">
+          @if (isLoading()) {
+            <span>Creating...</span>
+          } @else {
+            <span>Create Account</span>
+          }
+        </button>
+      </div>
+    </fieldset>
+  </form>
+</div>

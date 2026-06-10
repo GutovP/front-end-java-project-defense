@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { emailValidator } from '../../shared/validators/email-validator';
 import { passwordGroupValidator } from '../../shared/validators/password-group-validator';
@@ -15,67 +15,55 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private userService = inject(UserService);
   private toastService = inject(ToastService);
   private router = inject(Router);
 
+  readonly isLoading = signal<boolean>(false);
+
   registerForm = this.formBuilder.group({
-    firstName: [
-      '',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(20)],
-    ],
-    lastName: [
-      '',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(20)],
-    ],
+    firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     email: ['', [Validators.required, emailValidator()]],
     pass: this.formBuilder.group({
         password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-        rePassword: [''] }, 
-        {   validators: [passwordGroupValidator('password', 'rePassword')] }
+        rePassword: ['' , [Validators.required]] },
+        {validators: [passwordGroupValidator('password', 'rePassword')] }
     ),
   });
-  get firstname() {
-    return this.registerForm.get('firstName');
+  
+  get controls() {
+    return this.registerForm.controls;
   }
-  get lastname() {
-    return this.registerForm.get('lastName');
-  }
-
-  get email() {
-    return this.registerForm.get('email');
-  }
-  get password() {
-    return this.registerForm.get('pass.password');
-  }
-  get rePassword() {
-    return this.registerForm.get('pass');
+  get passControls() {
+    return this.registerForm.controls.pass.controls;
   }
 
   registerHandler() {
-    if (this.registerForm.invalid) {
+    if (this.registerForm.invalid || this.isLoading()) {
       return;
     }
 
-    const {
-      firstName,
-      lastName,
-      email,
-      pass: { password, rePassword } = {},
-    } = this.registerForm.value;
+    this.isLoading.set(true);
+
+    const registerData = this.registerForm.getRawValue();
+    const firstName = registerData.firstName;
+    const lastName = registerData.lastName;
+    const email = registerData.email;
+    const password = registerData.pass.password;
+    const rePassword = registerData.pass.rePassword;
 
     this.userService
-      .register(firstName!, lastName!, email!, password!, rePassword!)
+      .register(firstName, lastName, email, password, rePassword)
       .subscribe({
         next: () => {
-          this.toastService.activate(
-            `successfully registred with email: ${email}`
-          );
+          this.toastService.activate(`Successfully registred with email: ${email}`);
           this.router.navigate(['/auth/login']);
         },
         error: (error: HttpErrorResponse) => {
-          this.toastService.activate(error.error.message);
+          this.isLoading.set(false);
+          this.toastService.activate(error.error.message || 'Registration failed!');
           this.registerForm.reset();
         },
       });
