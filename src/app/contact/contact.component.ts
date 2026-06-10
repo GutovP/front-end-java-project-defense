@@ -1,9 +1,7 @@
-
-import { Component, computed, inject } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService } from './contact.service';
 import { ToastService } from '../core/toast/toast.service';
-
 
 @Component({
   selector: 'app-contact',
@@ -12,38 +10,43 @@ import { ToastService } from '../core/toast/toast.service';
   styleUrl: './contact.component.css',
 })
 export class ContactComponent {
-
   private contactService = inject(ContactService);
   private toastService = inject(ToastService);
   private fb = inject(NonNullableFormBuilder);
 
+  readonly isLoading = signal<Boolean>(false);
+  readonly contactForm = this.fb.group({
+    name: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone: [''],
+    message: ['', Validators.required],
+  });
 
-    readonly contactForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: [''],
-      message: ['', Validators.required],
-    });
-  
-
-  name = computed(() => this.contactForm.get('name'));
-  email = computed(() => this.contactForm.get('email'));
-  phone = computed(() => this.contactForm.get('phone'));
-  message = computed(() => this.contactForm.get('message'));
+  get controls() {
+    return this.contactForm.controls;
+  }
 
   contactHandler(): void {
-    if (this.contactForm.invalid) {
-      this.contactForm.markAllAsTouched();
+    if (this.contactForm.invalid || this.isLoading()) {
       return;
     }
 
-    const {name, email, phone, message} = this.contactForm.getRawValue();
+    this.isLoading.set(true);
 
-    this.contactService.sendMessage(name, email, message, phone).subscribe({
-      next: () => {
-        this.toastService.activate('Message sent successfully');
-        this.contactForm.reset();
-      }
-    })
+    const contactData = this.contactForm.getRawValue();
+
+    this.contactService
+      .sendMessage(
+        contactData.name,
+        contactData.email,
+        contactData.message,
+        contactData.phone,
+      )
+      .subscribe({
+        next: () => {
+          this.toastService.activate('Message sent successfully');
+          this.contactForm.reset();
+        },
+      });
   }
 }

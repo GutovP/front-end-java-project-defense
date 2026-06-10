@@ -22,7 +22,7 @@ export class RegisterComponent {
 
   readonly isLoading = signal<boolean>(false);
 
-  registerForm = this.formBuilder.group({
+  readonly registerForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     email: ['', [Validators.required, emailValidator()]],
