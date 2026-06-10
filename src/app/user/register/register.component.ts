@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { emailValidator } from '../../shared/validators/email-validator';
@@ -28,8 +28,11 @@ export class RegisterComponent {
     email: ['', [Validators.required, emailValidator()]],
     pass: this.formBuilder.group({
         password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-        rePassword: ['' , [Validators.required]] },
-        {validators: [passwordGroupValidator('password', 'rePassword')] }
+        rePassword: ['' , [Validators.required]] 
+      },
+      {
+        validators: [passwordGroupValidator('password', 'rePassword')] 
+      }
     ),
   });
   

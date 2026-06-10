@@ -4,7 +4,7 @@ import {catchError, Observable,tap, throwError} from 'rxjs';
 import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment.development';
-import { User } from '../core/models/user';
+import { ProfileUpdateResponse, User } from '../core/models/user';
 
 const baseUrl = environment.apiURL;
 
@@ -96,14 +96,27 @@ export class UserService {
       );
   }
 
-  updateProfile(firstName: string, lastName: string, email: string): Observable<User> {
+  updateProfile(firstName: string, lastName: string, email: string): Observable<ProfileUpdateResponse> {
 
     const updatePayload: Partial<User> = { firstName, lastName, email };
 
-    return this.http.put<User>(`${baseUrl}/user/profile`, updatePayload, {withCredentials: true,})
+    return this.http.put<ProfileUpdateResponse>(`${baseUrl}/user/profile`, updatePayload, {withCredentials: true,})
       .pipe(
-        tap((user) => {
-          this.setUser(user);
+        tap((response) => {
+
+          if (response.token) {
+
+            localStorage.setItem('token', response.token)
+          }
+
+          const updatedUser: User = {
+            ...this.user(),
+            firstName: response.firstName,
+            lastName: response.lastName,
+            email: response.email
+          } as User
+
+          this.setUser(updatedUser);
         }),
         catchError(this.errorHandler)
       );

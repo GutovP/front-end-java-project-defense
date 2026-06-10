@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AdminActivate } from '../shared/guards/admin.guard';
+import { AdminGuard } from '../shared/guards/admin.guard';
 
 export const PRODUCT_ROUTES: Routes = [
   {
@@ -15,7 +15,7 @@ export const PRODUCT_ROUTES: Routes = [
   {
     path: 'add-new',
     loadComponent: () => import('./add-new/product.component').then((m) => m.ProductComponent),
-    canActivate: [AdminActivate],
+    canActivate: [AdminGuard],
   },
 
   {
