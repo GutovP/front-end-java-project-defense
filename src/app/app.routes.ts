@@ -1,9 +1,8 @@
-import { Router, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
-import { UserService } from './user/user.service';
-import { inject } from '@angular/core';
+import { NoAdminGuard } from './shared/guards/no-admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,19 +22,7 @@ export const routes: Routes = [
     path: 'basket',
     loadChildren: () =>
       import('./basket/basket.routes').then((m) => m.BASKET_ROUTES),
-    canActivate: [
-      () => {
-        const userService = inject(UserService);
-        const router = inject(Router);
-
-        // Block admins from reaching this page reactively before it loads
-        if (userService.getUserRole() === 'ADMIN') {
-          router.navigateByUrl('/products/all');
-          return false;
-        }
-        return true;
-      },
-    ],
+    canActivate: [NoAdminGuard],
   },
 
   {

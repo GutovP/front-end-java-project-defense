@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { ToastService } from '../../core/toast/toast.service';
 
-export const AdminActivate: CanActivateFn = (route, state) => {
+export const AdminGuard: CanActivateFn = (route, state) => {
 
   const userService = inject(UserService);
   const router = inject(Router);
