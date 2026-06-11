@@ -46,13 +46,7 @@
             </div>
 
             <div class="d-grid col-6 mx-auto mt-3 mb-3">
-                <button type="submit" [disabled]="productForm.invalid || isLoading()" class="btn btn-primary">
-                    @if (isLoading()) {
-                        <span>Saving...</span>
-                    } @else {
-                        <span>Add Product</span>
-                    }
-                </button>
+                <button type="submit" [disabled]="productForm.invalid" class="btn btn-primary">Add Product</button>
             </div>
         </fieldset>
     </form>

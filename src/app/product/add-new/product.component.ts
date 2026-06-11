@@ -20,8 +20,6 @@ export class ProductComponent {
   private userService = inject(UserService);
   private router = inject(Router);
 
-  readonly isLoading = signal<boolean>(false);
-
   productForm = this.fb.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
@@ -33,11 +31,9 @@ export class ProductComponent {
 
   productHandler() {
 
-    if (this.productForm.invalid || this.isLoading()) {
+    if (this.productForm.invalid) {
       return;
     }
-
-    this.isLoading.set(true);
 
     const productData = this.productForm.getRawValue();
 
@@ -54,10 +50,8 @@ export class ProductComponent {
         next: () => {
           this.toastService.activate('Product added successfully');
           this.productForm.reset();
-          this.isLoading.set(false);
         },
         error: (error: HttpErrorResponse) => {
-          this.isLoading.set(false);
           if (error.status === 401) {
             this.handleUnauthorized();
           } else {
