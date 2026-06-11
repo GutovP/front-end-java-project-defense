@@ -30,8 +30,12 @@ export class BasketComponent implements OnInit {
         if (err.status === 401) {
           this.userService.logout();
           this.toastService.activate('Please login to view your basket');
+
         } else if (err.status === 404) {
           this.toastService.activate('Your basket is empty');
+
+        } else {
+          this.toastService.activate(err.message || 'Could not load basket')
         }
       },
     });
@@ -41,7 +45,7 @@ export class BasketComponent implements OnInit {
     this.basketService.updateItemQuantity(productId, newQuantity).subscribe({
       error: (err: HttpErrorResponse) => {
         this.toastService.activate(
-          err.error.message || 'Could not update quantity',
+          err.error.message || err.message || 'Could not update quantity',
         );
       },
     });
@@ -58,7 +62,7 @@ export class BasketComponent implements OnInit {
   removeFromBasket(basketItemId: string): void {
     this.basketService.removeFromBasket(basketItemId).subscribe({
       error: (err: HttpErrorResponse) => {
-        this.toastService.activate(err.error.message || 'Could not remove item');
+        this.toastService.activate(err.error.message || err.message || 'Could not remove item');
       },
     });
   }
