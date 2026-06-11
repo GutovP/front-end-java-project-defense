@@ -7,6 +7,7 @@ import { HeaderItems } from './header-items';
 import { UserService } from '../../user/user.service';
 import { ProductService } from '../../product/product.service';
 import { BasketService } from '../../basket/basket.service'; // BasketService importiert
+import { ToastService } from '../toast/toast.service';
 
 @Component({
   selector: 'app-header',
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnInit {
   private productService = inject(ProductService);
   private basketService = inject(BasketService);
   private router = inject(Router);
+  private toastService = inject(ToastService);
 
   
   readonly isLoggedIn = this.userService.isLoggedIn;
@@ -44,7 +46,7 @@ export class HeaderComponent implements OnInit {
 
     this.authItems = [
       { caption: 'Profile', link: ['/auth/profile'] },
-      { caption: 'Logout', link: ['/auth/logout'] },
+      { caption: 'Logout', link: [], action: () => this.handleLogout() },
     ];
 
     this.unAuthItems = [
@@ -64,6 +66,10 @@ export class HeaderComponent implements OnInit {
     this.basketService.loadBasket();
   }
 
+  handleLogout() {
+    this.userService.logout();
+    this.toastService.activate('Successfully logged out!');
+  }
   getCategories(): void {
     this.productService.getCategories().subscribe((categories) => {
       this.categories.set(categories || []);
