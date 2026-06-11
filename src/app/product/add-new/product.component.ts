@@ -20,7 +20,7 @@ export class ProductComponent {
   private userService = inject(UserService);
   private router = inject(Router);
 
-  productForm = this.fb.group({
+  readonly productForm = this.fb.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
     salePrice: [0, [Validators.required, Validators.min(0.01)]],

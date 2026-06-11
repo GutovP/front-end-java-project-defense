@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 
 import { ToastService } from '../../core/toast/toast.service';
@@ -14,38 +14,35 @@ import { emailValidator } from '../../shared/validators/email-validator';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  private formBuilder = inject(FormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private userService = inject(UserService);
   private toastService = inject(ToastService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  loginForm = this.formBuilder.group({
+  readonly loginForm = this.formBuilder.group({
     email: ['', [Validators.required, emailValidator()]],
     password: ['', Validators.required],
   });
 
-  get email() {
-    return this.loginForm.get('email');
-  }
-  get password() {
-    return this.loginForm.get('password');
+  get controls() {
+    return this.loginForm.controls;
   }
   
   loginHandler() {
     if (this.loginForm.invalid) {
       return;
     }
-    const { email, password } = this.loginForm.value;
+    const { email, password } = this.loginForm.getRawValue();
 
-    this.userService.login(email!, password!).subscribe({
+    this.userService.login(email, password).subscribe({
       next: (user) => {
         this.toastService.activate(`Welcome, ${user.user.firstName}! You are now logged in.`);
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigateByUrl(returnUrl);
       },
       error: (error: HttpErrorResponse) => {
-        this.toastService.activate(error.error.message);
+        this.toastService.activate(error.error.message || error.message || 'Login failed!');
         this.loginForm.reset();
       },
     });

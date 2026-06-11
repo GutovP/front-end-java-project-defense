@@ -9,12 +9,12 @@
         <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email" autocomplete="new-password">
 
       </div>
-      @if (email?.touched && email?.hasError('required')) {
+      @if (controls.email.touched && controls.email.hasError('required')) {
         <p
           class="error">
         Email is required! </p>
       }
-      @if (email?.touched && email?.hasError('emailValidator')) {
+      @if (controls.email.touched && controls.email.hasError('emailValidator')) {
         <p class="error">
         Email is not valid</p>
       }
@@ -25,7 +25,7 @@
         <input formControlName="password" type="password" class="form-control" id="password"
           placeholder="Enter Password">
         </div>
-        @if (password?.touched && password?.hasError('required')) {
+        @if (controls.password.touched && controls.password.hasError('required')) {
           <p
             class="error">
             Password is required!
