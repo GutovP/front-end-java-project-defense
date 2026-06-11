@@ -23,7 +23,7 @@
             <button class="btn btn-primary me-2" type="button" (click)="toggleEditMode('firstName')">Edit</button>
             }
             @if (showEditMode['firstName']) {
-            <button class="btn btn-primary" type="button" [disabled]="isLoading() || controls.firstName.invalid"
+            <button class="btn btn-primary" type="button" [disabled]="controls.firstName.invalid"
               (click)="updateField('firstName')">Save</button>
             }
           </div>
@@ -58,7 +58,7 @@
             <button class="btn btn-primary me-2" type="button" (click)="toggleEditMode('lastName')">Edit</button>
             }
             @if (showEditMode['lastName']) {
-            <button class="btn btn-primary" type="button" [disabled]="isLoading() || controls.lastName.invalid"
+            <button class="btn btn-primary" type="button" [disabled]="controls.lastName.invalid"
               (click)="updateField('lastName')">Save</button>
             }
           </div>
@@ -93,7 +93,7 @@
             <button class="btn btn-primary me-2" type="button" (click)="toggleEditMode('email')">Edit</button>
             }
             @if (showEditMode['email']) {
-            <button class="btn btn-primary" type="button" [disabled]="isLoading() || controls.email.invalid"
+            <button class="btn btn-primary" type="button" [disabled]="controls.email.invalid"
               (click)="updateField('email')">Save</button>
             }
           </div>
@@ -159,7 +159,7 @@
             }
             @if (showEditMode['password']) {
             <button class="btn btn-primary me-2" type="button"
-              [disabled]="isLoading() || controls.currentPassword.value === '' || controls.newPassword.invalid || profileForm.hasError('passwordGroupValidator')"
+              [disabled]="controls.currentPassword.value === '' || controls.newPassword.invalid || profileForm.hasError('passwordGroupValidator')"
               (click)="updateField('password')">Save</button>
             }
           </div>

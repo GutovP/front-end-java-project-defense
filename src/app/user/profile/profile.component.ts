@@ -28,7 +28,6 @@ export class ProfileComponent implements OnInit {
   };
 
   readonly user = signal<ProfileDetails>({ firstName: '', lastName: '', email: '' });
-  readonly isLoading = signal<boolean>(false);
 
   readonly profileForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -67,7 +66,7 @@ export class ProfileComponent implements OnInit {
 
   updateField(field: string): void {
     
-    if (this.isLoading()) {
+    if (this.profileForm.invalid) {
       return;
     }
 
@@ -100,13 +99,10 @@ export class ProfileComponent implements OnInit {
         return;
       }
 
-      this.isLoading.set(true);
-
       this.userService
         .changePassword(profileValues.currentPassword, profileValues.newPassword)
         .subscribe({
           next: () => {
-            this.isLoading.set(false);
             this.toggleEditMode(field);
             this.toastService.activate('Password updated successfully');
 
@@ -117,7 +113,6 @@ export class ProfileComponent implements OnInit {
             this.getUserProfile();
           },
           error: (error: HttpErrorResponse) => {
-            this.isLoading.set(false);
             if (error.status === 401) {
               this.handleUnauthorized();
             } else {
@@ -135,13 +130,10 @@ export class ProfileComponent implements OnInit {
         return;
       }
 
-      this.isLoading.set(true);
-
       this.userService
         .updateProfile(profileValues.firstName, profileValues.lastName, profileValues.email)
         .subscribe({
           next: (response: ProfileUpdateResponse) => {
-            this.isLoading.set(false);
 
             this.user.set(response);
             
@@ -155,8 +147,7 @@ export class ProfileComponent implements OnInit {
             this.toastService.activate('Profile updated successfully');
           },
           error: (error: HttpErrorResponse) => {
-            this.isLoading.set(false);
-            
+
             if (error.status === 401 || error.status === 500) {
               this.handleUnauthorized();
             } else {
