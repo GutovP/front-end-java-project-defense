@@ -14,7 +14,7 @@ export class ContactComponent {
   private toastService = inject(ToastService);
   private fb = inject(NonNullableFormBuilder);
 
-  readonly isLoading = signal<Boolean>(false);
+
   readonly contactForm = this.fb.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
@@ -27,11 +27,9 @@ export class ContactComponent {
   }
 
   contactHandler(): void {
-    if (this.contactForm.invalid || this.isLoading()) {
+    if (this.contactForm.invalid) {
       return;
     }
-
-    this.isLoading.set(true);
 
     const contactData = this.contactForm.getRawValue();
 

@@ -9,9 +9,9 @@
         <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter Name">
       </div>
       @if (controls.name.touched && controls.name.hasError('required')) {
-        <p class="error">
-          Name is required!
-        </p>
+      <p class="error">
+        Name is required!
+      </p>
       }
 
       <!-- Email -->
@@ -20,14 +20,14 @@
         <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter Email">
       </div>
       @if (controls.email.touched && controls.email.hasError('required')) {
-        <p class="error">
-          Email is required!
-        </p>
+      <p class="error">
+        Email is required!
+      </p>
       }
       @if (controls.email.touched && controls.email.hasError('emailValidator')) {
-        <p class="error">
-          Email is not valid
-        </p>
+      <p class="error">
+        Email is not valid
+      </p>
       }
 
       <!-- Phone (Optional) -->
@@ -39,23 +39,18 @@
       <!-- Message -->
       <div class="mt-3">
         <label for="message">Message</label>
-        <textarea formControlName="message" class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
+        <textarea formControlName="message" class="form-control" id="message" rows="4"
+          placeholder="Enter your message"></textarea>
       </div>
       @if (controls.message.touched && controls.message.hasError('required')) {
-        <p class="error">
-          Message is required!
-        </p>
+      <p class="error">
+        Message is required!
+      </p>
       }
 
       <!-- Submit Button -->
       <div class="d-grid col-6 mx-auto mt-4 mb-3">
-        <button [disabled]="contactForm.invalid || isLoading()" class="btn btn-primary">
-          @if (isLoading()) {
-            <span>Sending...</span>
-          } @else {
-            <span>Send</span>
-          }
-        </button>
+        <button [disabled]="contactForm.invalid" class="btn btn-primary">Send</button>
       </div>
     </fieldset>
   </form>
