@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { emailValidator } from '../../shared/validators/email-validator';
@@ -19,8 +19,6 @@ export class RegisterComponent {
   private userService = inject(UserService);
   private toastService = inject(ToastService);
   private router = inject(Router);
-
-  readonly isLoading = signal<boolean>(false);
 
   readonly registerForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -44,11 +42,9 @@ export class RegisterComponent {
   }
 
   registerHandler() {
-    if (this.registerForm.invalid || this.isLoading()) {
+    if (this.registerForm.invalid) {
       return;
     }
-
-    this.isLoading.set(true);
 
     const registerData = this.registerForm.getRawValue();
     const firstName = registerData.firstName;
@@ -65,7 +61,6 @@ export class RegisterComponent {
           this.router.navigate(['/auth/login']);
         },
         error: (error: HttpErrorResponse) => {
-          this.isLoading.set(false);
           this.toastService.activate(error.error.message || 'Registration failed!');
           this.registerForm.reset();
         },

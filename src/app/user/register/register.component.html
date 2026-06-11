@@ -13,7 +13,8 @@
         <p class="error">
           First name is required! </p>
         }
-        @if (controls.firstName.touched && controls.firstName.hasError('minlength') || controls.firstName.hasError('maxlength')) {
+        @if (controls.firstName.touched && controls.firstName.hasError('minlength') ||
+        controls.firstName.hasError('maxlength')) {
         <p class="error">
           First name length must be between 3 and 20 characters!</p>
         }
@@ -28,7 +29,8 @@
         <p class="error">
           Last name is required! </p>
         }
-        @if (controls.lastName.touched && controls.lastName.hasError('minlength') || controls.lastName.hasError('maxlength')) {
+        @if (controls.lastName.touched && controls.lastName.hasError('minlength') ||
+        controls.lastName.hasError('maxlength')) {
         <p class="error">
           Last name length must be between 3 and 20 characters!</p>
         }
@@ -76,8 +78,8 @@
           <input formControlName="rePassword" type="password" class="form-control" id="rePassword"
             placeholder="ReEnter Password">
 
-           @if (passControls.rePassword.touched && passControls.rePassword.hasError('required')) {
-            <p class="error">Repeat password is required!</p>
+          @if (passControls.rePassword.touched && passControls.rePassword.hasError('required')) {
+          <p class="error">Repeat password is required!</p>
           }
 
           @if (passControls.rePassword.touched && passControls.rePassword.hasError('passwordGroupValidator')) {
@@ -89,13 +91,7 @@
       </div>
 
       <div class="d-grid col-6 mx-auto mt-3 mb-3">
-        <button [disabled]="registerForm.invalid || isLoading()" class="btn btn-primary">
-          @if (isLoading()) {
-            <span>Creating...</span>
-          } @else {
-            <span>Create Account</span>
-          }
-        </button>
+        <button [disabled]="registerForm.invalid" class="btn btn-primary">Create Account</button>
       </div>
     </fieldset>
   </form>
