@@ -28,9 +28,8 @@ export class ProfileComponent implements OnInit {
   };
 
   readonly user = signal<ProfileDetails>({ firstName: '', lastName: '', email: '' });
-  readonly isLoading = signal<boolean>(false); // boolean kleingeschrieben
+  readonly isLoading = signal<boolean>(false);
 
-  // Formular startet standardmäßig OHNE Passwort-Validatoren auf Gruppenebene
   readonly profileForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -67,13 +66,13 @@ export class ProfileComponent implements OnInit {
   }
 
   updateField(field: string): void {
+    
     if (this.isLoading()) {
       return;
     }
 
     const token = this.userService.getToken();
 
-    // Session-Prüfung
     if (!this.userService.isLoggedIn() && this.userService.isTokenExpired(token!)) {
       this.handleUnauthorized();
       return;
@@ -81,21 +80,16 @@ export class ProfileComponent implements OnInit {
 
     const profileValues = this.profileForm.getRawValue();
 
-    // ==========================================
-    // SEKTION 1: PASSWORT ÄNDERN
-    // ==========================================
     if (field === 'password') {
-      // Validatoren dynamisch aktivieren
+      
       this.controls.currentPassword.setValidators([Validators.required]);
       this.controls.newPassword.setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(20)]);
       this.profileForm.setValidators([passwordGroupValidator('newPassword', 'confirmNewPassword')]);
 
-      // Status aktualisieren
       this.controls.currentPassword.updateValueAndValidity();
       this.controls.newPassword.updateValueAndValidity();
       this.profileForm.updateValueAndValidity();
 
-      // Validierung prüfen
       if (
         this.controls.currentPassword.invalid ||
         this.controls.newPassword.invalid ||
@@ -116,7 +110,6 @@ export class ProfileComponent implements OnInit {
             this.toggleEditMode(field);
             this.toastService.activate('Password updated successfully');
 
-            // Validatoren und Formular nach Erfolg sauber zurücksetzen
             this.controls.currentPassword.clearValidators();
             this.controls.newPassword.clearValidators();
             this.profileForm.clearValidators();
@@ -133,13 +126,10 @@ export class ProfileComponent implements OnInit {
           },
         });
 
-    // ==========================================
-    // SEKTION 2: TEXTFELDER ÄNDERN (firstName, lastName, email)
-    // ==========================================
     } else {
+
       const activeControl = this.profileForm.get(field);
 
-      // Nur das geänderte Feld validieren, Passwörter werden ignoriert
       if (activeControl && activeControl.invalid) {
         activeControl.markAsTouched();
         return;
@@ -153,10 +143,8 @@ export class ProfileComponent implements OnInit {
           next: (response: ProfileUpdateResponse) => {
             this.isLoading.set(false);
 
-            // Lokales Sektion-Signal updaten
             this.user.set(response);
             
-            // Formular-Werte synchron halten
             this.profileForm.patchValue({
               firstName: response.firstName,
               lastName: response.lastName,
@@ -168,7 +156,7 @@ export class ProfileComponent implements OnInit {
           },
           error: (error: HttpErrorResponse) => {
             this.isLoading.set(false);
-            // Wenn das Backend wegen des alten Tokens crasht (500) oder abweist (401)
+            
             if (error.status === 401 || error.status === 500) {
               this.handleUnauthorized();
             } else {

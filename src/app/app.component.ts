@@ -1,9 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CoreModule } from './core/core.module';
-import { UserService } from './user/user.service';
-import { interval } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
