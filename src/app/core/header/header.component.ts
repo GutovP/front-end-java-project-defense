@@ -6,7 +6,7 @@ import { filter } from 'rxjs';
 import { HeaderItems } from './header-items';
 import { UserService } from '../../user/user.service';
 import { ProductService } from '../../product/product.service';
-import { BasketService } from '../../basket/basket.service'; // BasketService importiert
+import { BasketService } from '../../basket/basket.service';
 import { ToastService } from '../toast/toast.service';
 
 @Component({
