@@ -32,27 +32,23 @@ export class HeaderComponent implements OnInit {
   readonly navbarCollapsed = signal<boolean>(true);
   readonly categories = signal<string[]>([]);
 
-  headerItems: HeaderItems[] = [];
-  authItems: HeaderItems[] = [];
-  unAuthItems: HeaderItems[] = [];
 
-  ngOnInit(): void {
-    this.headerItems = [
+  readonly headerItems = computed<HeaderItems[]>(() => [
       { caption: 'Home', link: [''] },
       { caption: 'Flower shop', link: ['/products/all'] },
       { caption: 'Contact', link: ['/contact'] },
       { caption: 'Users', link: ['/users'] },
-    ];
-
-    this.authItems = [
+    ]);
+  readonly authItems = computed<HeaderItems[]>(() => [
       { caption: 'Profile', link: ['/auth/profile'] },
       { caption: 'Logout', link: [], action: () => this.handleLogout() },
-    ];
-
-    this.unAuthItems = [
+    ]);
+  readonly unAuthItems = computed<HeaderItems[]>(() => [
       { caption: 'Login', link: ['/auth/login'] },
       { caption: 'Register', link: ['/auth/register'] },
-    ];
+    ]);
+
+  ngOnInit(): void {
 
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
