@@ -28,17 +28,7 @@ export class BasketService {
   }
   loadBasket(): void {
     this.viewBasket().subscribe({
-      next: (basket) => {
-        if (!basket.items || basket.items.length === 0) {
-          this.basketState.set(null);
-        } else {
-          this.basketState.set(basket);
-        }
-      },
-      error: () => {
-        this.basketState.set(null);
-        console.log('Basket initialization skipped or user unauthenticated.')
-      }
+      error: () => console.log('Basket initialization skipped or user unauthenticated.')
     });
   }
 
@@ -50,7 +40,20 @@ export class BasketService {
   }
 
   viewBasket(): Observable<Basket> {
-    return this.http.get<Basket>(`${baseUrl}/basket`);
+    return this.http.get<Basket>(`${baseUrl}/basket`)
+    .pipe(
+      tap({
+        next: (basket) => {
+          if (!basket.items || basket.items.length === 0) {
+            this.basketState.set(null);
+
+          } else {
+            this.basketState.set(basket);
+          }
+        },
+        error: () => this.basketState.set(null)
+      })
+    );
   }
 
   updateItemQuantity(productId: string, newQuantity: number): Observable<Basket> {

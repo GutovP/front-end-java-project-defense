@@ -55,6 +55,14 @@ export class UserService {
     }
   }
 
+  checkTokenValidity(): void {
+    const token = this.getToken();
+
+    if (!token || this.isTokenExpired(token)) {
+      this.logout();
+    }
+  }
+
   setUser(user: User): void {
       this.user.set(user);
       localStorage.setItem('user', JSON.stringify(user));
