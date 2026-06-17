@@ -67,7 +67,7 @@ export class UserService {
   checkTokenValidity(): void {
     const token = this.getToken();
 
-    if (!token || this.isTokenExpired(token)) {
+    if (token && this.isTokenExpired(token)) {
       this.logout();
     }
   }
