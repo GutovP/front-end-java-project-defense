@@ -50,9 +50,13 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.userService.checkTokenValidity();
+
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
+
+        this.userService.checkTokenValidity();
         this.checkUrl(event.urlAfterRedirects);
       });
 
