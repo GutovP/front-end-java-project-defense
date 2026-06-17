@@ -21,15 +21,24 @@ export class UserService {
   readonly getUserRole = computed(() => this.user()?.role || '');
 
   constructor() {
-    const setUser = localStorage.getItem('user');
-    if (setUser) {
-      this.user.set(JSON.parse(setUser));
+
+    const storedToken = this.getToken();
+
+    if (!storedToken || this.isTokenExpired(storedToken)) {
+      this.logout();
+
+    } else {
+
+      const setUser = localStorage.getItem('user');
+
+      if (setUser) {
+        this.user.set(JSON.parse(setUser));
+
+      } else {
+        this.getProfile().subscribe();
+      }
     }
 
-    const storedToken = localStorage.getItem('token');
-    if (storedToken && !setUser) {
-      this.getProfile().subscribe();
-    }
   }
   getToken(): string | null {
     return localStorage.getItem('token');
