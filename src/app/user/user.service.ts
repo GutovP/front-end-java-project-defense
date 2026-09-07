@@ -24,15 +24,19 @@ export class UserService {
 
     const storedToken = this.getToken();
 
-    if (!storedToken || this.isTokenExpired(storedToken)) {
+    if (!storedToken) {
+      return;
+    }
+
+    if (this.isTokenExpired(storedToken)) {
       this.logout();
 
     } else {
 
-      const storedUser = localStorage.getItem('user');
+      const setUser = localStorage.getItem('user');
 
-      if (storedUser) {
-        this.user.set(JSON.parse(storedUser));
+      if (setUser) {
+        this.user.set(JSON.parse(setUser));
 
       } else {
         this.getProfile().subscribe();
