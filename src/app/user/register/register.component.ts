@@ -57,7 +57,7 @@ export class RegisterComponent {
       .register(firstName, lastName, email, password, rePassword)
       .subscribe({
         next: () => {
-          this.toastService.activate(`Successfully registred with email: ${email}`);
+          this.toastService.activate(`Successfully registered with email: ${email}`);
           this.router.navigate(['/auth/login']);
         },
         error: (error: HttpErrorResponse) => {

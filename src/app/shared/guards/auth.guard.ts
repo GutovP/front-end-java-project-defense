@@ -4,7 +4,7 @@ import { UserService } from '../../user/user.service';
 import { ToastService } from '../../core/toast/toast.service';
 
 
-export const AuthGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state) => {
 
   const userService = inject(UserService);
   const router = inject(Router);

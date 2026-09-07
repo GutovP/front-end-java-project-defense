@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
-import { NoAdminGuard } from './shared/guards/no-admin.guard';
+import { noAdminGuard } from './shared/guards/no-admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,7 +22,7 @@ export const routes: Routes = [
     path: 'basket',
     loadChildren: () =>
       import('./basket/basket.routes').then((m) => m.BASKET_ROUTES),
-    canActivate: [NoAdminGuard],
+    canActivate: [noAdminGuard],
   },
 
   {

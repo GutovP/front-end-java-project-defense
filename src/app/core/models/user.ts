@@ -16,9 +16,3 @@ export interface ProfileDetails {
   email: string;
 }
 
-export interface ProfileUpdateResponse extends ProfileDetails{
-
-  token?: string;
-
-}
-

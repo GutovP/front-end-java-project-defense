@@ -22,7 +22,7 @@ export class AdminService {
     return this.http.put<void>(`${baseUrl}/admin/${userId}/role?newRole=${newRole}`, {});
   }
 
-  deleteUser(userId:string): Observable<void> {
+  deleteUser(userId: string): Observable<void> {
     return this.http.delete<void>(`${baseUrl}/admin/${userId}`);
   }
 }

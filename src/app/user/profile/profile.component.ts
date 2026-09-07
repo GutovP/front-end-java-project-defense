@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { emailValidator } from '../../shared/validators/email-validator';
-import { ProfileDetails, ProfileUpdateResponse } from '../../core/models/user';
+import { ProfileDetails } from '../../core/models/user';
 import { passwordGroupValidator } from '../../shared/validators/password-group-validator';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from '../../core/toast/toast.service';
@@ -133,7 +133,7 @@ export class ProfileComponent implements OnInit {
       this.userService
         .updateProfile(profileValues.firstName, profileValues.lastName, profileValues.email)
         .subscribe({
-          next: (response: ProfileUpdateResponse) => {
+          next: (response) => {
 
             this.user.set(response);
             

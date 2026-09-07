@@ -26,10 +26,10 @@ export class UsersListComponent {
       next: (data) => {
         this.users.set(data || []);
       },
-      error: (err) => {
-        if (err) {
-          this.toastService.activate('Only admins can see the user list');
-        }
+      error: () => {
+      
+        this.toastService.activate('Only admins can see the user list');
+        
       },
     });
   }
@@ -43,7 +43,7 @@ export class UsersListComponent {
         this.toastService.activate('User role updated successfully.');
       },
       error: (error: HttpErrorResponse) => {
-        this.toastService.activate(error.error?.message || 'Could not update role');
+        this.toastService.activate(error.error?.message || 'Could not update the user role');
       },
     });
   }

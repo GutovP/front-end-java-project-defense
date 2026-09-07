@@ -4,7 +4,7 @@ import {catchError, Observable,tap, throwError} from 'rxjs';
 import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment.development';
-import { ProfileUpdateResponse, User } from '../core/models/user';
+import { User } from '../core/models/user';
 
 const baseUrl = environment.apiURL;
 
@@ -29,10 +29,10 @@ export class UserService {
 
     } else {
 
-      const setUser = localStorage.getItem('user');
+      const storedUser = localStorage.getItem('user');
 
-      if (setUser) {
-        this.user.set(JSON.parse(setUser));
+      if (storedUser) {
+        this.user.set(JSON.parse(storedUser));
 
       } else {
         this.getProfile().subscribe();
@@ -72,7 +72,7 @@ export class UserService {
     }
   }
 
-  setUser(user: User): void {
+  storedUser(user: User): void {
       this.user.set(user);
       localStorage.setItem('user', JSON.stringify(user));
   }
@@ -81,7 +81,7 @@ export class UserService {
     return this.http.post<User>(`${baseUrl}/auth/register`, { firstName, lastName, email, password, rePassword }, { withCredentials: true })
       .pipe(
         tap((user) => {
-          this.setUser(user);
+          this.storedUser(user);
         }),
         catchError(this.errorHandler)
       );
@@ -92,7 +92,7 @@ export class UserService {
       .pipe(
         tap((response) => {
           localStorage.setItem('token', response.token);
-          this.setUser(response.user);
+          this.storedUser(response.user);
         }),
         catchError(this.errorHandler)
       );
@@ -107,40 +107,28 @@ export class UserService {
     return this.http.get<User>(`${baseUrl}/user/profile`, { withCredentials: true })
       .pipe(
         tap((user) => {
-          this.setUser(user);
+          this.storedUser(user);
         }),
         catchError(this.errorHandler)
       );
   }
 
-  updateProfile(firstName: string, lastName: string, email: string): Observable<ProfileUpdateResponse> {
+  updateProfile(firstName: string, lastName: string, email: string): Observable<User> {
 
     const updatePayload: Partial<User> = { firstName, lastName, email };
 
-    return this.http.put<ProfileUpdateResponse>(`${baseUrl}/user/profile`, updatePayload, {withCredentials: true,})
+    return this.http.put<User>(`${baseUrl}/user/profile`, updatePayload, {withCredentials: true,})
       .pipe(
-        tap((response) => {
+        tap((user) => {
 
-          if (response.token) {
-
-            localStorage.setItem('token', response.token)
-          }
-
-          const updatedUser: User = {
-            ...this.user(),
-            firstName: response.firstName,
-            lastName: response.lastName,
-            email: response.email
-          } as User
-
-          this.setUser(updatedUser);
+          this.storedUser(user);
         }),
         catchError(this.errorHandler)
       );
   }
-  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+  changePassword(currentPassword: string, newPassword: string): Observable<User> {
     
-    return this.http.put(`${baseUrl}/user/change-password`, { currentPassword, newPassword }, { withCredentials: true })
+    return this.http.put<User>(`${baseUrl}/user/change-password`, { currentPassword, newPassword }, { withCredentials: true })
       .pipe(catchError(this.errorHandler));
   }
 
