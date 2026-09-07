@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Basket } from '../core/models/basket';
+import { UserService } from '../user/user.service';
 
 const baseUrl = environment.apiURL;
 
@@ -11,6 +12,7 @@ const baseUrl = environment.apiURL;
 })
 export class BasketService {
   private http = inject(HttpClient);
+  private userService = inject(UserService);
   private basketState = signal<Basket | null>(null);
   readonly basket = this.basketState.asReadonly();
 
@@ -27,6 +29,10 @@ export class BasketService {
     this.basketState.set(basket);
   }
   loadBasket(): void {
+    if (!this.userService.getToken()) {
+      this.basketState.set(null);
+      return;
+    }
     this.viewBasket().subscribe({
       error: () => console.log('Basket initialization skipped or user unauthenticated.')
     });
