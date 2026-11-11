@@ -2,7 +2,8 @@
   @if (product(); as currentProduct) {
     <div class="card product-details-card">
       <div class="img-container">
-        <img [src]="currentProduct.image" class="card-img-top d-block mx-auto" alt="{{currentProduct.name}}">
+        <img [src]="currentProduct.image" class="card-img-top d-block mx-auto" alt="{{currentProduct.name}}"
+        (click)="openImage($event, currentProduct.image)">
       </div>
       <div class="card-body">
         <h5 class="card-title text-center"><b>{{currentProduct.name}}</b></h5>
@@ -28,4 +29,12 @@
       </div>
     </div>
   }
+  @if (zoomedImage(); as img) {
+    <div class="lightbox" (click)="closeImage()">
+      <button type="button" class="lightbox-close" aria-label="Close"
+            (click)="closeImage()">&times;</button>
+      <img class="lightbox-img" [src]="img" alt=""
+         (click)="$event.stopPropagation()">
+    </div>
+}
 </div>

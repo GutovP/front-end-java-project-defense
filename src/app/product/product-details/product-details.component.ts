@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, input, signal } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -24,6 +24,7 @@ export class ProductDetailsComponent {
   private router = inject(Router);
  
   readonly product = signal<Product | null>(null);
+  readonly zoomedImage = signal<string | null>(null);
   readonly basket = this.basketService.basket;
 
   readonly quantity = new FormControl<number>(1, {nonNullable: true});
@@ -94,6 +95,20 @@ export class ProductDetailsComponent {
         }
       }
     })
+  }
+  openImage(event: MouseEvent, image: string): void {
+
+    event.preventDefault();
+    event.stopPropagation();
+    this.zoomedImage.set(image);
+  }
+  closeImage():void {
+    this.zoomedImage.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.zoomedImage.set(null);
   }
 
 }
