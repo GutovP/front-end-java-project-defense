@@ -42,7 +42,7 @@ export class LoginComponent {
         this.router.navigateByUrl(returnUrl);
       },
       error: (error: HttpErrorResponse) => {
-        this.toastService.activate(error.error.message || error.message || 'Login failed!');
+        this.toastService.activate(error.error?.message || error.message || 'Login failed!');
         this.loginForm.reset();
       },
     });

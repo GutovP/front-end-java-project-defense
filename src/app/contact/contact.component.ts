@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService } from './contact.service';
 import { ToastService } from '../core/toast/toast.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-contact',
@@ -45,6 +46,11 @@ export class ContactComponent {
           this.toastService.activate('Message sent successfully');
           this.contactForm.reset();
         },
+        error: (err: HttpErrorResponse) => {
+          this.toastService.activate(
+          err.error.message || err.message || 'Message not sent',
+        );
+        }
       });
   }
 }
