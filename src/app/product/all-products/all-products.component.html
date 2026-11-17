@@ -6,7 +6,7 @@
           <a [routerLink]="['/products', product.categoryName, product.name]"
             routerLinkActive="router-link-active">
             <div class="card text-center h-100">
-              <img [src]="product.image" class="card-img-top" alt="...">
+              <img [src]="product.images[0]" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">{{product.name}}</h5>
               </div>

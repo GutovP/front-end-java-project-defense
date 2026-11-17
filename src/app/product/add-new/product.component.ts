@@ -36,13 +36,17 @@ export class ProductComponent {
     }
 
     const productData = this.productForm.getRawValue();
+    const images = productData.imageUrl
+                   .split(',')
+                   .map(url => url.trim())
+                   .filter(url => url.length > 0);
 
     this.productService
       .addProduct(
         productData.name, 
         productData.description, 
         productData.salePrice, 
-        productData.imageUrl, 
+        images, 
         productData.category, 
         productData.quantity)
         .subscribe({
@@ -55,7 +59,7 @@ export class ProductComponent {
           if (error.status === 401) {
             this.handleUnauthorized();
           } else {
-            this.toastService.activate(error.error.message || 'An error occurred');
+            this.toastService.activate(error.error?.message || 'An error occurred');
           }
         },
       });

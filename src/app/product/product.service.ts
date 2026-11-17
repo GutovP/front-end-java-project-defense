@@ -26,9 +26,9 @@ export class ProductService {
     return this.http.get<Product[]>(`${baseUrl}/products/${category}`);
   }
 
-  addProduct(name: string, description: string, salePrice: number, image: string, category: string, quantity: number): Observable<Product> {
+  addProduct(name: string, description: string, salePrice: number, images: string[], category: string, quantity: number): Observable<Product> {
 
-    return this.http.post<Product>(`${baseUrl}/products`,{ name, description, salePrice, image, category, quantity });
+    return this.http.post<Product>(`${baseUrl}/products`,{ name, description, salePrice, images, category, quantity });
   }
 
   updateProductQuantity(category: string, name: string, quantity: number): Observable<Product> {

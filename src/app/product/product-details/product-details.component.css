@@ -57,6 +57,34 @@
   cursor: pointer;
 }
 
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  line-height: 1;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.lightbox-nav:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-prev {
+  left: 1.5rem;
+}
+
+.lightbox-next {
+  right: 1.5rem;
+}
+
 @media (max-width: 576px) {
   .product-details-card {
     margin: 0 1rem;
